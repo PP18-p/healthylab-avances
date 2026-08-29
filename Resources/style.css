@@ -1,1 +1,285 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f8f3;
+    color: #333;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    background-color: #2e7d32;
+    color: white;
+
+    padding: 20px 60px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 30px;
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+main {
+    padding: 50px 7%;
+}
+
+
+/* PRESENTACIÓN */
+
+.presentacion {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.presentacion h2 {
+    color: #2e7d32;
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.presentacion p {
+    font-size: 18px;
+    color: #666;
+}
+
+
+/* =========================
+   RECETAS
+========================= */
+
+#recetas {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 25px;
+}
+
+#recetas > h2 {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    color: #2e7d32;
+
+    font-size: 30px;
+
+    margin-bottom: 10px;
+}
+
+.receta {
+    background-color: white;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    transition: transform 0.3s;
+}
+
+.receta:hover {
+    transform: translateY(-5px);
+}
+
+
+/* ESPACIO PARA LA FOTO */
+
+.foto {
+    height: 180px;
+
+    margin: 0;
+
+    background-color: #d9e8d7;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #777;
+
+    font-size: 18px;
+}
+
+
+/* TITULO DE RECETA */
+
+.receta h3 {
+    padding: 18px;
+
+    text-align: center;
+
+    color: #2e7d32;
+
+    font-size: 20px;
+}
+
+
+/* =========================
+   CONTACTO
+========================= */
+
+#contacto {
+    max-width: 700px;
+
+    margin: 70px auto 0;
+
+    background-color: white;
+
+    padding: 40px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#contacto h2 {
+    text-align: center;
+
+    color: #2e7d32;
+
+    font-size: 30px;
+
+    margin-bottom: 25px;
+}
+
+form {
+    display: flex;
+
+    flex-direction: column;
+}
+
+form label {
+    margin-bottom: 8px;
+
+    font-weight: bold;
+}
+
+form input,
+form textarea {
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 20px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+
+    font-size: 16px;
+}
+
+form textarea {
+    height: 120px;
+
+    resize: none;
+}
+
+form button {
+    padding: 13px;
+
+    background-color: #2e7d32;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 6px;
+
+    font-size: 17px;
+
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #256628;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    margin-top: 60px;
+
+    background-color: #1b5e20;
+
+    color: white;
+
+    text-align: center;
+
+    padding: 25px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1000px) {
+
+    #recetas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    header {
+        flex-direction: column;
+
+        gap: 20px;
+
+        padding: 20px;
+    }
+
+    nav {
+        gap: 15px;
+    }
+
+    #recetas {
+        grid-template-columns: 1fr;
+    }
+
+    main {
+        padding: 30px 5%;
+    }
+
+}
