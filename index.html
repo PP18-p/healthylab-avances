@@ -4,214 +4,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HealthyLab</title>
-    <link rel="stylesheet" href=resources/style.css>
+    <meta name="description"
+        content="HealthyLab: recetas nutritivas, simples y deliciosas para cuidar tu salud todos los días.">
+    <title>HealthyLab | Recetas nutritivas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Figtree:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="Resources/style.css">
 </head>
 
 <body>
+    <a class="saltar" href="#recetas">Saltar al contenido</a>
 
     <!-- ENCABEZADO -->
-    <header id="inicio">
+    <header class="encabezado" id="inicio">
+        <div class="encabezado__interior">
+            <a href="#inicio" class="logo">Healthy<span>Lab</span></a>
 
-        <h1>HealthyLab</h1>
+            <nav class="nav" id="nav" aria-label="Principal">
+                <a href="#inicio" class="nav__link">Inicio</a>
+                <a href="#recetas" class="nav__link">Recetas</a>
+                <a href="#contacto" class="nav__link">Contáctanos</a>
+            </nav>
 
-        <nav>
+            <div class="acciones">
+                <button class="btn-icono" id="modo-oscuro" type="button" aria-label="Activar modo oscuro">
+                    <svg class="icono-luna" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+                    </svg>
+                    <svg class="icono-sol" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="4" />
+                        <path
+                            d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+                    </svg>
+                </button>
+                <button class="btn-icono hamburguesa" id="hamburguesa" type="button" aria-label="Abrir menú"
+                    aria-expanded="false" aria-controls="cajon">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- PRESENTACIÓN -->
+        <section class="presentacion">
+            <div class="presentacion__texto">
+                <h1>Porque cuidar de tu salud no debe ser una ciencia</h1>
+                <p>Recetas nutritivas para comer bien sin complicarte.</p>
+                <div class="presentacion__botones">
+                    <a href="#recetas" class="boton">Ver recetas</a>
+                    <a href="#contacto" class="boton boton--suave">Escríbenos</a>
+                </div>
+            </div>
+            <div class="presentacion__fotos" aria-hidden="true">
+                <img src="resources/salmon.jpg" alt="" class="foto-a">
+                <img src="resources/ensaladaquinoa.jpg" alt="" class="foto-b">
+            </div>
+        </section>
+
+        <!-- RECETAS -->
+        <section id="recetas" class="seccion">
+            <div class="seccion__cabecera">
+                <h2>Recetas</h2>
+                <p class="contador" id="contador" aria-live="polite"></p>
+            </div>
+
+            <div class="herramientas">
+                <label class="buscador">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-3.5-3.5" />
+                    </svg>
+                    <input type="search" id="buscador" placeholder="Buscar una receta" aria-label="Buscar una receta">
+                </label>
+                <div class="filtros" role="group" aria-label="Filtrar por tipo de comida">
+                    <button type="button" class="filtro activo" data-filtro="todas">Todas</button>
+                    <button type="button" class="filtro" data-filtro="desayuno">Desayuno</button>
+                    <button type="button" class="filtro" data-filtro="almuerzo">Almuerzo</button>
+                    <button type="button" class="filtro" data-filtro="cena">Cena</button>
+                    <button type="button" class="filtro" data-filtro="favoritas">Favoritas</button>
+                </div>
+            </div>
+
+            <div class="rejilla" id="rejilla">
+                <article class="receta" data-cat="almuerzo">
+                    <figure class="foto"><img src="resources/ensaldapollo.webp" alt="Ensalada de Pollo" loading="lazy">
+                    </figure>
+                    <h3>Ensalada de Pollo</h3>
+                </article>
+                <article class="receta" data-cat="desayuno">
+                    <figure class="foto"><img src="resources/avenafrutos.jpg" alt="Avena con Frutas" loading="lazy">
+                    </figure>
+                    <h3>Avena con Frutas</h3>
+                </article>
+                <article class="receta" data-cat="desayuno">
+                    <figure class="foto"><img src="resources/batidofrutas.jpg" alt="Batido de Frutas" loading="lazy">
+                    </figure>
+                    <h3>Batido de Frutas</h3>
+                </article>
+                <article class="receta" data-cat="almuerzo">
+                    <figure class="foto"><img src="resources/salteado.jpg" alt="Salteado de Verduras" loading="lazy">
+                    </figure>
+                    <h3>Salteado de Verduras</h3>
+                </article>
+                <article class="receta" data-cat="almuerzo">
+                    <figure class="foto"><img src="resources/arrozypollo.jpg" alt="Arroz con Pollo" loading="lazy">
+                    </figure>
+                    <h3>Arroz con Pollo</h3>
+                </article>
+                <article class="receta" data-cat="cena">
+                    <figure class="foto"><img src="resources/tortilla.jpg" alt="Tortilla de Verduras" loading="lazy">
+                    </figure>
+                    <h3>Tortilla de Verduras</h3>
+                </article>
+                <article class="receta" data-cat="desayuno">
+                    <figure class="foto"><img src="resources/yogur.jpg" alt="Yogur con Frutas" loading="lazy"></figure>
+                    <h3>Yogur con Frutas</h3>
+                </article>
+                <article class="receta" data-cat="cena">
+                    <figure class="foto"><img src="resources/pescadoh.jpg" alt="Pescado al Horno" loading="lazy">
+                    </figure>
+                    <h3>Pescado al Horno</h3>
+                </article>
+                <article class="receta" data-cat="almuerzo">
+                    <figure class="foto"><img src="resources/ensaladaquinoa.jpg" alt="Ensalada de Quinoa"
+                            loading="lazy"></figure>
+                    <h3>Ensalada de Quinoa</h3>
+                </article>
+                <article class="receta" data-cat="desayuno">
+                    <figure class="foto"><img src="resources/pancakes.jpeg" alt="Panqueques de Avena" loading="lazy">
+                    </figure>
+                    <h3>Panqueques de Avena</h3>
+                </article>
+                <article class="receta" data-cat="cena">
+                    <figure class="foto"><img src="resources/sopaverduras.jpg" alt="Sopa de Verduras" loading="lazy">
+                    </figure>
+                    <h3>Sopa de Verduras</h3>
+                </article>
+                <article class="receta" data-cat="almuerzo">
+                    <figure class="foto"><img src="resources/wrappollo.png" alt="Wrap de Pollo" loading="lazy"></figure>
+                    <h3>Wrap de Pollo</h3>
+                </article>
+                <article class="receta" data-cat="desayuno">
+                    <figure class="foto"><img src="resources/omelette.jpg" alt="Omelette Saludable" loading="lazy">
+                    </figure>
+                    <h3>Omelette Saludable</h3>
+                </article>
+                <article class="receta" data-cat="cena">
+                    <figure class="foto"><img src="resources/salmon.jpg" alt="Salmón con Vegetales" loading="lazy">
+                    </figure>
+                    <h3>Salmón con Vegetales</h3>
+                </article>
+                <article class="receta" data-cat="desayuno">
+                    <figure class="foto"><img src="resources/ensaladafrutas.jpg" alt="Ensalada de Frutas"
+                            loading="lazy"></figure>
+                    <h3>Ensalada de Frutas</h3>
+                </article>
+                <article class="receta" data-cat="almuerzo">
+                    <figure class="foto"><img src="resources/hamburguesa.jpg" alt="Hamburguesa Saludable"
+                            loading="lazy"></figure>
+                    <h3>Hamburguesa Saludable</h3>
+                </article>
+            </div>
+
+            <p class="vacio" id="vacio" hidden>No encontramos recetas con esa búsqueda. Prueba con otra palabra o cambia
+                el filtro.</p>
+        </section>
+
+        <!-- CONTACTO -->
+        <section id="contacto" class="seccion contacto">
+            <div class="contacto__texto">
+                <h2>Contáctanos</h2>
+                <p>¿Tienes una duda, una idea o quieres sugerirnos una receta? Escríbenos y te respondemos pronto.</p>
+            </div>
+
+            <form id="formulario" novalidate>
+                <div class="campo">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre" autocomplete="name"
+                        required minlength="3">
+                    <small class="error" id="error-nombre"></small>
+                </div>
+                <div class="campo">
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" name="correo" placeholder="Escribe tu correo" autocomplete="email"
+                        required>
+                    <small class="error" id="error-correo"></small>
+                </div>
+                <div class="campo">
+                    <label for="mensaje">Mensaje</label>
+                    <textarea id="mensaje" name="mensaje" placeholder="Escribe tu mensaje" maxlength="500" required
+                        minlength="10"></textarea>
+                    <div class="campo__pie">
+                        <small class="error" id="error-mensaje"></small>
+                        <small class="caracteres" id="caracteres">0 / 500</small>
+                    </div>
+                </div>
+                <button type="submit" class="boton">Enviar mensaje</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="pie">
+        <p class="logo logo--pie">Healthy<span>Lab</span></p>
+        <p>© 2026 HealthyLab. Todos los derechos reservados.</p>
+    </footer>
+
+    <button class="subir" id="subir" type="button" aria-label="Volver arriba">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m6 14 6-6 6 6" />
+        </svg>
+    </button>
+    <!-- MENÚ LATERAL -->
+    <div class="velo" id="velo" hidden></div>
+    <aside class="cajon" id="cajon" aria-label="Menú de herramientas" inert>
+        <div class="cajon__cab">
+            <h2>Menú</h2>
+            <button class="btn-icono" id="cajon-cerrar" type="button" aria-label="Cerrar menú">✕</button>
+        </div>
+        <nav class="cajon__nav solo-movil" aria-label="Secciones">
             <a href="#inicio">Inicio</a>
             <a href="#recetas">Recetas</a>
             <a href="#contacto">Contáctanos</a>
         </nav>
-        <button id="modo-oscuro">
-            <img class= "icono-luna"src="resources/moon.png" alt="Modo Oscuro">
-            <img class="icono-sol" src="resources/sin.png" alt="Modo Claro">
-        </button> 
-    </header>
+        <p class="cajon__tit">Cocina</p>
+        <button class="cajon__item" type="button" data-herr="despensa">¿Qué cocino hoy?<small>Recetas con los
+                ingredientes que tienes</small></button>
+        <button class="cajon__item" type="button" data-herr="plan">Planificador semanal<small>Organiza tu menú de la
+                semana</small></button>
+        <button class="cajon__item" type="button" data-herr="lista">Lista de compras<small>Ingredientes que te
+                faltan</small><span class="badge" id="b-lista">0</span></button>
+        <button class="cajon__item" type="button" data-herr="favoritos">Favoritos<small>Tus recetas
+                guardadas</small><span class="badge" id="b-favs">0</span></button>
+        <p class="cajon__tit">Accesibilidad</p>
+        <button class="cajon__item" type="button" id="t-grande" aria-pressed="false">Texto ampliado<small>Aumenta el
+                tamaño de las letras</small></button>
+        <p class="cajon__nota">Abre cualquier receta para ajustar porciones, ver la información nutricional, usar el
+            modo cocina, ver sustituciones, escucharla en voz alta y dejar tu valoración.</p>
+    </aside>
 
+    <dialog id="receta-dlg" aria-label="Receta">
+        <div id="receta-cont"></div>
+    </dialog>
+    <dialog id="herr-dlg" aria-label="Herramienta"><button class="cerrar" type="button" data-cerrar
+            aria-label="Cerrar">✕</button>
+        <div class="dlg" id="herr-cont"></div>
+    </dialog>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main>
+    <dialog id="cocina" class="cocina" aria-label="Modo cocina">
+        <div class="cocina__top"><strong id="c-titulo"></strong><button class="mini" id="c-salir"
+                type="button">Salir</button></div>
+        <div class="cocina__prog">
+            <div id="c-barra"></div>
+        </div>
+        <p class="cocina__info" id="c-info"></p>
+        <p class="cocina__paso" id="c-paso"></p>
+        <div class="cocina__timer"><span id="c-reloj"></span><button class="mini mini--p" id="c-iniciar" type="button"
+                hidden>Iniciar temporizador</button></div>
+        <div class="cocina__nav">
+            <button class="mini" id="c-ant" type="button">Anterior</button>
+            <button class="mini" id="c-leer" type="button">Escuchar paso</button>
+            <button class="mini mini--p" id="c-sig" type="button">Siguiente</button>
+        </div>
+    </dialog>
 
-        <section class="presentacion">
-
-            <h2>Recetas Nutritivas</h2>
-
-            <p>
-                Porque cuidar de tu salud no deber ser una ciencia.
-            </p>
-
-        </section>
-
-
-        <!-- SECCIÓN DE RECETAS -->
-        <section id="recetas">
-
-            <h2>Recetas</h2>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/ensaldapollo.webp" alt="Ensalada de Pollo">
-                </figure>
-                <h3>Ensalada de Pollo</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/avenafrutos.jpg" alt="Avena con Frutas">
-                </figure>
-                <h3>Avena con Frutas</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/batidofrutas.jpg" alt="Batido de Frutas">
-                </figure>
-                <h3>Batido de Frutas</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/salteado.jpg" alt="Salteado de Verduras">
-                </figure>
-                <h3>Salteado de Verduras</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/arrozypollo.jpg" alt="Arroz con Pollo">
-                </figure>
-                <h3>Arroz con Pollo</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/tortilla.jpg" alt="Tortilla de Verduras">
-                </figure>
-                <h3>Tortilla de Verduras</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/yogur.jpg" alt="Yogur con Frutas">
-                </figure>
-                <h3>Yogur con Frutas</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/pescadoh.jpg" alt="Pescado al Horno">
-                </figure>
-                <h3>Pescado al Horno</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/ensaladaquinoa.jpg" alt="Ensalada de Quinoa">
-                </figure>
-                <h3>Ensalada de Quinoa</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/pancakes.jpeg" alt="Panqueques de Avena">
-                </figure>
-                <h3>Panqueques de Avena</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/sopaverduras.jpg" alt="Sopa de Verduras">
-                </figure>
-                <h3>Sopa de Verduras</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/wrappollo.png" alt="Wrap de Pollo">
-                </figure>
-                <h3>Wrap de Pollo</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/omelette.jpg" alt="Omelette Saludable">
-                </figure>
-                <h3>Omelette Saludable</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/salmon.jpg" alt="Salmón con Vegetales">
-                </figure>
-                <h3>Salmón con Vegetales</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/ensaladafrutas.jpg" alt="Ensalada de Frutas">
-                </figure>
-                <h3>Ensalada de Frutas</h3>
-            </article>
-
-            <article class="receta">
-                <figure class="foto">
-                    <img src="resources/hamburguesa.jpEg" alt="Hamburguesa Saludable">
-                </figure>
-                <h3>Hamburguesa Saludable</h3>
-            </article>
-
-        </section>
-
-
-        <!-- FORMULARIO DE CONTACTO -->
-        <section id="contacto">
-
-            <h2>Contáctanos</h2>
-
-            <form>
-
-                <label for="nombre">Nombre</label>
-                <input
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    placeholder="Escribe tu nombre"
-                >
-
-                <label for="correo">Correo electrónico</label>
-                <input
-                    type="email"
-                    id="correo"
-                    name="correo"
-                    placeholder="Escribe tu correo"
-                >
-
-                <label for="mensaje">Mensaje</label>
-                <textarea
-                    id="mensaje"
-                    name="mensaje"
-                    placeholder="Escribe tu mensaje"
-                ></textarea>
-
-                <button type="submit">
-                    Enviar mensaje
-                </button>
-
-            </form>
-
-        </section>
-
-    </main>
-
-
-    <!-- PIE DE PÁGINA -->
-    <footer>
-
-        <p>
-            © 2026 HealthyLab. Todos los derechos reservados.
-        </p>
-
-    </footer>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
 
     <script src="Resources/script.js"></script>
- </body>
+</body>
 
- </html>
+</html>
