@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthyLab|Login</title>
+</head>
+
+<body>
+    <form id="formulario" novalidate>
+        <div class="campo">
+            <label for="usuario">Usuario</label>
+            <input type="text" id="usuario" name="usuario" placeholder="Coloca un usuario" autocomplete="user123"
+                required minlength="7">
+            <small class="error" id="error-user"></small>
+        </div>
+        <div class="campo">
+            <label for="contraseña">Contraseña</label>
+            <input type="text" id="contraseña" name="contraseña" placeholder="Escribe tu contraseña" autocomplete="1234"
+                required>
+            <small class="error" id="error-contraseña"></small>
+
+        <button type="submit" class="boton">Iniciar sesión</button>
+    </form>
+</body>
+
+</html>
