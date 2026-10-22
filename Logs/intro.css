@@ -1,0 +1,223 @@
+/* ===== HealthyLab ===== */
+
+:root {
+    --verde: #2e7d32;
+    --verde-hover: #256628;
+    --verde-profundo: #1b5e20;
+    --menta: #e3f0e0;
+    --lima: #a5d65c;
+    --fondo: #f4f8f3;
+    --superficie: #ffffff;
+    --texto: #1f2a20;
+    --texto-suave: #5b665c;
+    --borde: #d8e4d5;
+    --sombra: 0 1px 2px rgba(20, 50, 25, .06), 0 8px 24px rgba(20, 50, 25, .08);
+    --titulos: "Fraunces", Georgia, serif;
+    --cuerpo: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+:root[data-tema="oscuro"] {
+    --verde: #66bb6a;
+    --verde-hover: #7ccd80;
+    --verde-profundo: #0f2a13;
+    --menta: #1d3322;
+    --fondo: #101712;
+    --superficie: #17211a;
+    --texto: #e8f0e6;
+    --texto-suave: #9fb0a0;
+    --borde: #2a3a2d;
+    --sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--cuerpo);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    background: var(--fondo);
+    color: var(--texto);
+    min-height: 100vh;
+    text-align: center;
+    transition: background-color .4s ease, color .4s ease;
+}
+
+a {
+    color: inherit;
+}
+
+:focus-visible {
+    outline: 3px solid var(--lima);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+/* ===== ENCABEZADO (pegado arriba) ===== */
+header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    width: 100%;
+    background: var(--verde);
+    color: #fff;
+    text-align: left;
+    transition: box-shadow .3s ease, background-color .4s ease;
+}
+
+:root[data-tema="oscuro"] header {
+    background: var(--verde-profundo);
+}
+
+.encabezado__interior {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.logo {
+    font-family: var(--titulos);
+    font-weight: 700;
+    font-size: 1.6rem;
+    text-decoration: none;
+    letter-spacing: -.01em;
+}
+
+.logo span {
+    color: var(--lima);
+}
+
+.nav {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.nav__link {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .98rem;
+    padding: 8px 16px;
+    border-radius: 999px;
+    transition: background-color .2s ease;
+}
+
+.nav__link:hover {
+    background: rgba(255, 255, 255, .14);
+}
+
+.nav__link:last-child {
+    background: rgba(255, 255, 255, .22);
+}
+
+.nav__link:last-child:hover {
+    background: rgba(255, 255, 255, .32);
+}
+
+/* ===== PRESENTACIÓN ===== */
+h1,
+h2 {
+    font-family: var(--titulos);
+    line-height: 1.15;
+    letter-spacing: -.015em;
+}
+
+h1 {
+    font-size: clamp(2.3rem, 5vw, 3.6rem);
+    color: var(--verde);
+    max-width: 1180px;
+    margin: 0 auto 20px;
+    padding: 88px 24px 0;
+}
+
+h2 {
+    font-family: var(--cuerpo);
+    font-weight: 400;
+    font-size: 1.15rem;
+    letter-spacing: 0;
+    line-height: 1.6;
+    color: var(--texto-suave);
+    max-width: 52ch;
+    margin: 0 auto 32px;
+    padding: 0 24px;
+}
+
+/* ===== BOTÓN ===== */
+.filtro {
+    display: block;
+    margin: 0 auto;
+    background: var(--verde);
+    color: #fff;
+    border: 2px solid var(--verde);
+    font: 600 1rem var(--cuerpo);
+    padding: 13px 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: var(--sombra);
+    transition: background-color .2s ease, transform .15s ease;
+}
+
+:root[data-tema="oscuro"] .filtro {
+    color: #0d1a0f;
+}
+
+.filtro:hover {
+    background: var(--verde-hover);
+    border-color: var(--verde-hover);
+}
+
+.filtro:active {
+    transform: scale(.97);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 560px) {
+    body {
+        font-size: 1rem;
+    }
+
+    .encabezado__interior {
+        padding: 12px 18px;
+    }
+
+    .logo {
+        font-size: 1.35rem;
+    }
+
+    .nav__link {
+        padding: 6px 12px;
+        font-size: .9rem;
+    }
+
+    h1 {
+        padding-top: 56px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition-duration: .01ms !important;
+    }
+}

@@ -1,0 +1,171 @@
+/* ===== HealthyLab | Login ===== */
+
+:root {
+    --verde: #2e7d32;
+    --verde-hover: #256628;
+    --verde-profundo: #1b5e20;
+    --menta: #e3f0e0;
+    --lima: #a5d65c;
+    --fondo: #f4f8f3;
+    --superficie: #ffffff;
+    --texto: #1f2a20;
+    --texto-suave: #5b665c;
+    --borde: #d8e4d5;
+    --error: #c62828;
+    --sombra: 0 1px 2px rgba(20, 50, 25, .06), 0 8px 24px rgba(20, 50, 25, .08);
+    --titulos: "Fraunces", Georgia, serif;
+    --cuerpo: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+:root[data-tema="oscuro"] {
+    --verde: #66bb6a;
+    --verde-hover: #7ccd80;
+    --verde-profundo: #0f2a13;
+    --menta: #1d3322;
+    --fondo: #101712;
+    --superficie: #17211a;
+    --texto: #e8f0e6;
+    --texto-suave: #9fb0a0;
+    --borde: #2a3a2d;
+    --error: #ef7b7b;
+    --sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--cuerpo);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    background: var(--fondo);
+    color: var(--texto);
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px 18px;
+    background-image: radial-gradient(circle at 50% 0%, var(--menta), transparent 60%);
+    transition: background-color .4s ease, color .4s ease;
+}
+
+:focus-visible {
+    outline: 3px solid var(--lima);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+/* ===== FORMULARIO ===== */
+#formulario {
+    width: 100%;
+    max-width: 420px;
+    background: var(--superficie);
+    border-radius: 20px;
+    padding: 40px 36px 36px;
+    box-shadow: var(--sombra);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-top: 6px solid var(--verde);
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.campo label {
+    font-weight: 600;
+    font-size: .95rem;
+}
+
+.campo input {
+    width: 100%;
+    font: inherit;
+    color: var(--texto);
+    background: var(--fondo);
+    border: 1.5px solid var(--borde);
+    border-radius: 10px;
+    padding: 12px 14px;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.campo input::placeholder {
+    color: var(--texto-suave);
+    opacity: .8;
+}
+
+.campo input:focus {
+    outline: none;
+    border-color: var(--verde);
+    box-shadow: 0 0 0 4px var(--menta);
+}
+
+/* Estados de validación (añade estas clases con JS al .campo) */
+.campo.invalido input {
+    border-color: var(--error);
+}
+
+.campo.valido input {
+    border-color: var(--verde);
+}
+
+.error {
+    color: var(--error);
+    font-size: .87rem;
+    min-height: 1.2em;
+}
+
+/* ===== BOTÓN ===== */
+.boton {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    background: var(--verde);
+    color: #fff;
+    border: 2px solid var(--verde);
+    font: 600 1rem var(--cuerpo);
+    padding: 13px 28px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color .2s ease, transform .15s ease;
+}
+
+:root[data-tema="oscuro"] .boton {
+    color: #0d1a0f;
+}
+
+.boton:hover {
+    background: var(--verde-hover);
+    border-color: var(--verde-hover);
+}
+
+.boton:active {
+    transform: scale(.97);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 560px) {
+    body {
+        font-size: 1rem;
+    }
+
+    #formulario {
+        padding: 28px 20px 24px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition-duration: .01ms !important;
+    }
+}
