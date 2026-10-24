@@ -1,28 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HealthyLab</title>
     <link rel="stylesheet" href="intro.css">
-    </link>
 </head>
-<header>
-    <div class="encabezado__interior">
-        <a href="#inicio" class="logo">Healthy<span>Lab</span></a>
-
-        <nav class="nav" id="nav" aria-label="Principal">
-            <a href="login.html" class="nav__link">Registrate</a>
-            <a href="login.html" class="nav__link">Inicia sesión</a>
-        </nav>
-    </div>
-</header>
 
 <body>
-    <h1>HealthyLab</h1>
-    <h2>Un lugar para empezar a cuidar tu alimentación sin tanta ciencia</h2>
-    <button type="button" class="filtro" data-filtro="Únete" onclick="location.href='login.html'">Únete</button>
+    <header>
+        <div class="encabezado__interior">
+            <a href="#inicio" class="logo">Healthy<span>Lab</span></a>
+
+            <nav class="nav" id="nav" aria-label="Principal">
+                <a href="login.html?modo=registro" class="nav__link">Regístrate</a>
+                <a href="login.html" class="nav__link">Inicia sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="inicio">
+        <section class="presentacion">
+            <h1>HealthyLab</h1>
+            <h2>Un lugar para empezar a cuidar tu alimentación sin tanta ciencia</h2>
+            <button type="button" class="filtro" data-filtro="Únete"
+                onclick="location.href='login.html?modo=registro'">Únete</button>
+        </section>
+
+        <section class="bloque">
+            <h3>¿Qué es HealthyLab?</h3>
+            <p class="intro">
+                HealthyLab es una página pensada para quienes quieren comer mejor sin complicarse.
+                Reúne recetas nutritivas, fáciles de preparar y con ingredientes que se consiguen en
+                cualquier mercado, explicadas paso a paso y sin términos difíciles.
+            </p>
+        </section>
+
+        <section class="bloque">
+            <h3>Qué ofrecemos</h3>
+            <div class="rejilla">
+                <article class="dato">
+                    <span class="icono c-verde">🥗</span>
+                    <h4>Recetas nutritivas</h4>
+                    <p>Desayunos, almuerzos, cenas y snacks balanceados para todos los días.</p>
+                </article>
+                <article class="dato">
+                    <span class="icono c-naranja">⏱️</span>
+                    <h4>Rápidas y simples</h4>
+                    <p>Preparaciones cortas, con pocos ingredientes y pasos claros.</p>
+                </article>
+                <article class="dato">
+                    <span class="icono c-azul">📊</span>
+                    <h4>Información nutricional</h4>
+                    <p>Conoce calorías y nutrientes de cada receta para decidir mejor.</p>
+                </article>
+                <article class="dato">
+                    <span class="icono c-morado">⭐</span>
+                    <h4>Tus favoritas</h4>
+                    <p>Guarda las recetas que más te gustan y vuelve a ellas cuando quieras.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="bloque">
+            <h3>Cómo funciona</h3>
+            <ol class="pasos">
+                <li>
+                    <span class="numero">1</span>
+                    <div>
+                        <h4>Crea tu cuenta</h4>
+                        <p>Regístrate con un usuario y una contraseña, es gratis y toma un minuto.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="numero">2</span>
+                    <div>
+                        <h4>Explora las recetas</h4>
+                        <p>Busca por tipo de comida o por los ingredientes que tengas en casa.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="numero">3</span>
+                    <div>
+                        <h4>Cocina y disfruta</h4>
+                        <p>Sigue los pasos, ajusta las porciones y come mejor cada día.</p>
+                    </div>
+                </li>
+            </ol>
+        </section>
+
+        <section class="llamado">
+            <h3>¿Listo para empezar?</h3>
+            <p>Únete a HealthyLab y arma tu forma de comer, a tu ritmo.</p>
+            <button type="button" class="filtro" onclick="location.href='login.html?modo=registro'">Crear mi
+                cuenta</button>
+        </section>
+    </main>
+
+    <footer class="pie">
+        <p>Healthy<span>Lab</span> · Cuida tu alimentación sin tanta ciencia</p>
+    </footer>
 </body>
 
 </html>

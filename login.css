@@ -53,24 +53,60 @@ body {
     transition: background-color .4s ease, color .4s ease;
 }
 
+a {
+    color: var(--verde);
+    font-weight: 600;
+}
+
 :focus-visible {
     outline: 3px solid var(--lima);
     outline-offset: 3px;
     border-radius: 6px;
 }
 
-/* ===== FORMULARIO ===== */
-#formulario {
+[hidden] {
+    display: none !important;
+}
+
+/* ===== TARJETA ===== */
+.tarjeta-login {
     width: 100%;
     max-width: 420px;
     background: var(--superficie);
     border-radius: 20px;
-    padding: 40px 36px 36px;
+    padding: 36px 36px 30px;
     box-shadow: var(--sombra);
+    border-top: 6px solid var(--verde);
+    text-align: center;
+}
+
+.logo {
+    display: inline-block;
+    font-family: var(--titulos);
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: var(--verde);
+    letter-spacing: -.01em;
+}
+
+.logo span {
+    color: var(--lima);
+}
+
+#titulo {
+    font-family: var(--titulos);
+    font-size: 1.8rem;
+    line-height: 1.2;
+    margin: 10px 0 24px;
+}
+
+/* ===== FORMULARIO ===== */
+#formulario {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    border-top: 6px solid var(--verde);
+    gap: 18px;
+    text-align: left;
 }
 
 .campo {
@@ -106,7 +142,7 @@ body {
     box-shadow: 0 0 0 4px var(--menta);
 }
 
-/* Estados de validación (añade estas clases con JS al .campo) */
+/* Estados de validación (los pone login.js) */
 .campo.invalido input {
     border-color: var(--error);
 }
@@ -115,17 +151,33 @@ body {
     border-color: var(--verde);
 }
 
+.campo.invalido input:focus {
+    box-shadow: 0 0 0 4px rgba(198, 40, 40, .15);
+}
+
 .error {
     color: var(--error);
     font-size: .87rem;
     min-height: 1.2em;
 }
 
+.error--general {
+    text-align: center;
+    font-weight: 600;
+    min-height: 0;
+}
+
+.error--general:not(:empty) {
+    background: rgba(198, 40, 40, .1);
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
 /* ===== BOTÓN ===== */
 .boton {
     display: block;
     width: 100%;
-    margin-top: 12px;
+    margin-top: 4px;
     background: var(--verde);
     color: #fff;
     border: 2px solid var(--verde);
@@ -149,13 +201,20 @@ body {
     transform: scale(.97);
 }
 
+/* ===== ENLACES ===== */
+.enlaces {
+    margin-top: 16px;
+    font-size: .93rem;
+    color: var(--texto-suave);
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 560px) {
     body {
         font-size: 1rem;
     }
 
-    #formulario {
+    .tarjeta-login {
         padding: 28px 20px 24px;
     }
 }
