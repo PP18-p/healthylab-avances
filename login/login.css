@@ -1,4 +1,4 @@
-/* ===== HealthyLab | Login ===== */
+/* ===== HealthyLab | Login (autónomo: no necesita style.css) ===== */
 
 :root {
     --verde: #2e7d32;
@@ -68,10 +68,55 @@ a {
     display: none !important;
 }
 
+/* ===== BOTÓN DE TEMA ===== */
+.tema {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 5;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    background: var(--superficie);
+    color: var(--texto);
+    border: 1px solid var(--borde);
+    box-shadow: var(--sombra);
+    transition: border-color .2s ease;
+}
+
+.tema:hover {
+    border-color: var(--verde);
+}
+
+.tema svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.icono-sol {
+    display: none;
+}
+
+:root[data-tema="oscuro"] .icono-luna {
+    display: none;
+}
+
+:root[data-tema="oscuro"] .icono-sol {
+    display: block;
+}
+
 /* ===== TARJETA ===== */
 .tarjeta-login {
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
     background: var(--superficie);
     border-radius: 20px;
     padding: 36px 36px 30px;
@@ -98,11 +143,54 @@ a {
     font-family: var(--titulos);
     font-size: 1.8rem;
     line-height: 1.2;
-    margin: 10px 0 24px;
+    letter-spacing: -.015em;
+    margin: 10px 0 6px;
+}
+
+.subtitulo {
+    color: var(--texto-suave);
+    font-size: .97rem;
+    margin-bottom: 22px;
+}
+
+/* ===== PESTAÑAS ===== */
+.pestanas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+    border-radius: 999px;
+    padding: 4px;
+    margin-bottom: 24px;
+}
+
+.pestana {
+    font: 600 .95rem var(--cuerpo);
+    color: var(--texto-suave);
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+    padding: 9px 14px;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.pestana:hover {
+    color: var(--texto);
+}
+
+.pestana.activo {
+    background: var(--verde);
+    color: #fff;
+}
+
+:root[data-tema="oscuro"] .pestana.activo {
+    color: #0d1a0f;
 }
 
 /* ===== FORMULARIO ===== */
-#formulario {
+.formulario {
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -155,6 +243,33 @@ a {
     box-shadow: 0 0 0 4px rgba(198, 40, 40, .15);
 }
 
+/* Campo de contraseña con botón mostrar/ocultar */
+.clave {
+    position: relative;
+}
+
+.clave input {
+    padding-right: 96px;
+}
+
+.ver {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font: 600 .85rem var(--cuerpo);
+    color: var(--verde);
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.ver:hover {
+    background: var(--menta);
+}
+
 .error {
     color: var(--error);
     font-size: .87rem;
@@ -203,9 +318,33 @@ a {
 
 /* ===== ENLACES ===== */
 .enlaces {
-    margin-top: 16px;
+    margin-top: 18px;
     font-size: .93rem;
     color: var(--texto-suave);
+    text-align: center;
+}
+
+/* ===== AVISO ===== */
+.aviso {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    z-index: 60;
+    transform: translate(-50%, 24px);
+    opacity: 0;
+    pointer-events: none;
+    background: var(--verde-profundo);
+    color: #fff;
+    padding: 14px 22px;
+    border-radius: 12px;
+    box-shadow: var(--sombra);
+    max-width: calc(100% - 40px);
+    transition: opacity .3s ease, transform .3s ease;
+}
+
+.aviso.visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
 }
 
 /* ===== RESPONSIVE ===== */
