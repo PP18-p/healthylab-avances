@@ -1,135 +1,57 @@
-// ===== HealthyLab | Verificación de login =====
-// Nota: esto valida en el navegador (localStorage). Sirve para el proyecto,
-// pero una verificación real de usuarios necesita un servidor.
+"use strict";
 
-const CLAVE_USUARIOS = "healthylab_usuarios";
-const CLAVE_SESION = "healthylab_sesion";
-const DESTINO = "index.html";
+(function () {
+    const $ = (s, c = document) => c.querySelector(s);
+    const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 
-const form = document.getElementById("formulario");
-const titulo = document.getElementById("titulo");
-const boton = document.getElementById("boton");
-const cambiar = document.getElementById("cambiar");
-const textoCambio = document.getElementById("texto-cambio");
-const campoConfirmar = document.getElementById("campo-confirmar");
-const errorGeneral = document.getElementById("error-general");
+    /* Si ya hay una sesión activa, se redirige */
+    const s = HL.sesion();
+    if (s) { location.replace(s.rol === "admin" ? "admin.html" : "intro.html"); return; }
 
-const inputUsuario = document.getElementById("usuario");
-const inputClave = document.getElementById("contraseña");
-const inputConfirmar = document.getElementById("confirmar");
-
-let modoRegistro = new URLSearchParams(location.search).get("modo") === "registro";
-
-/* ---------- Almacenamiento ---------- */
-const leerUsuarios = () => {
-    try { return JSON.parse(localStorage.getItem(CLAVE_USUARIOS)) || {}; }
-    catch { return {}; }
-};
-const guardarUsuarios = (u) => localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(u));
-
-async function cifrar(texto) {
-    const datos = new TextEncoder().encode(texto);
-    const hash = await crypto.subtle.digest("SHA-256", datos);
-    return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, "0")).join("");
-}
-
-/* ---------- Reglas de validación ---------- */
-function validarUsuario(v) {
-    if (!v) return "Escribe un usuario.";
-    if (v.length < 7) return "Mínimo 7 caracteres.";
-    if (v.length > 20) return "Máximo 20 caracteres.";
-    if (!/^[A-Za-z]/.test(v)) return "Debe empezar con una letra.";
-    if (!/^[A-Za-z0-9._]+$/.test(v)) return "Solo letras, números, punto y guion bajo.";
-    return "";
-}
-
-function validarClave(v) {
-    if (!v) return "Escribe una contraseña.";
-    if (v.length < 8) return "Mínimo 8 caracteres.";
-    if (!/[a-z]/.test(v) || !/[A-Z]/.test(v)) return "Usa mayúsculas y minúsculas.";
-    if (!/[0-9]/.test(v)) return "Incluye al menos un número.";
-    return "";
-}
-
-/* ---------- Mostrar errores ---------- */
-function marcar(input, mensaje) {
-    const campo = input.closest(".campo");
-    const aviso = document.getElementById("error-" + (input.id === "usuario" ? "user" : input.id));
-    campo.classList.toggle("invalido", Boolean(mensaje));
-    campo.classList.toggle("valido", !mensaje && input.value !== "");
-    if (aviso) aviso.textContent = mensaje;
-    return !mensaje;
-}
-
-function limpiarGeneral() { errorGeneral.textContent = ""; }
-
-/* ---------- Cambiar entre iniciar sesión y registrarse ---------- */
-function aplicarModo() {
-    titulo.textContent = modoRegistro ? "Crea tu cuenta" : "Inicia sesión";
-    boton.textContent = modoRegistro ? "Registrarme" : "Iniciar sesión";
-    textoCambio.textContent = modoRegistro ? "¿Ya tienes una cuenta?" : "¿No tienes una cuenta?";
-    cambiar.textContent = modoRegistro ? "Inicia sesión" : "Regístrate";
-    campoConfirmar.hidden = !modoRegistro;
-    inputClave.autocomplete = modoRegistro ? "new-password" : "current-password";
-    form.reset();
-    document.querySelectorAll(".campo").forEach(c => c.classList.remove("valido", "invalido"));
-    document.querySelectorAll(".error").forEach(e => e.textContent = "");
-}
-
-cambiar.addEventListener("click", (e) => {
-    e.preventDefault();
-    modoRegistro = !modoRegistro;
-    aplicarModo();
-});
-
-/* ---------- Validación en vivo ---------- */
-inputUsuario.addEventListener("input", () => { limpiarGeneral(); marcar(inputUsuario, validarUsuario(inputUsuario.value.trim())); });
-inputClave.addEventListener("input", () => {
-    limpiarGeneral();
-    // En login no exigimos formato (solo que la cuenta exista), en registro sí.
-    marcar(inputClave, modoRegistro ? validarClave(inputClave.value) : (inputClave.value ? "" : "Escribe tu contraseña."));
-});
-inputConfirmar.addEventListener("input", () => {
-    marcar(inputConfirmar, inputConfirmar.value === inputClave.value ? "" : "Las contraseñas no coinciden.");
-});
-
-/* ---------- Envío ---------- */
-form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    limpiarGeneral();
-
-    const usuario = inputUsuario.value.trim();
-    const clave = inputClave.value;
-
-    const okUsuario = marcar(inputUsuario, validarUsuario(usuario));
-    const okClave = marcar(inputClave, modoRegistro ? validarClave(clave) : (clave ? "" : "Escribe tu contraseña."));
-    let okConfirmar = true;
-    if (modoRegistro) {
-        okConfirmar = marcar(inputConfirmar, inputConfirmar.value === clave ? "" : "Las contraseñas no coinciden.");
+    /* ===== Pestañas ===== */
+    const TXT = {
+        entrar: ["Bienvenido", "Ingresa con tu usuario o correo."],
+        crear: ["Crea tu cuenta", "Guarda tus recetas favoritas y tu lista de compras."]
+    };
+    function pestana(t) {
+        $$("[data-tab]").forEach(b => b.classList.toggle("activo", b.dataset.tab === t));
+        $("#f-entrar").hidden = t !== "entrar";
+        $("#f-crear").hidden = t !== "crear";
+        $("#auth-titulo").textContent = TXT[t][0];
+        $("#auth-sub").textContent = TXT[t][1];
+        (t === "entrar" ? $("#e-id") : $("#c-nombre")).focus();
     }
-    if (!okUsuario || !okClave || !okConfirmar) return;
+    $$("[data-tab]").forEach(b => b.addEventListener("click", () => pestana(b.dataset.tab)));
+    if (location.hash === "#crear") pestana("crear");
 
-    const usuarios = leerUsuarios();
-    const llave = usuario.toLowerCase();
-    const hash = await cifrar(clave);
+    /* Mostrar / ocultar contraseña */
+    $$("[data-ver]").forEach(b => b.addEventListener("click", () => {
+        const i = document.getElementById(b.dataset.ver), ver = i.type === "password";
+        i.type = ver ? "text" : "password";
+        b.textContent = ver ? "Ocultar" : "Mostrar";
+        b.setAttribute("aria-label", ver ? "Ocultar contraseña" : "Mostrar contraseña");
+    }));
 
-    if (modoRegistro) {
-        if (usuarios[llave]) {
-            marcar(inputUsuario, "Ese usuario ya existe.");
-            return;
-        }
-        usuarios[llave] = hash;
-        guardarUsuarios(usuarios);
-    } else {
-        // Solo pasa si la cuenta existe y la contraseña coincide
-        if (!usuarios[llave] || usuarios[llave] !== hash) {
-            errorGeneral.textContent = "Usuario o contraseña incorrectos.";
-            return;
-        }
-    }
+    /* ===== Ingresar ===== */
+    $("#f-entrar").addEventListener("submit", e => {
+        e.preventDefault();
+        const r = HL.login($("#e-id").value, $("#e-pass").value);
+        $("#e-error").textContent = r.ok ? "" : r.error;
+        if (!r.ok) { $("#e-pass").value = ""; $("#e-pass").focus(); return; }
+        HL.aviso(r.rol === "admin" ? "Entrando al panel..." : "Sesión iniciada.");
+        setTimeout(() => location.replace(r.rol === "admin" ? "admin.html" : "intro.html"), 500);
+    });
 
-    sessionStorage.setItem(CLAVE_SESION, usuario);
-    location.href = DESTINO;
-});
-
-aplicarModo();
+    /* ===== Crear cuenta ===== */
+    $("#f-crear").addEventListener("submit", e => {
+        e.preventDefault();
+        const err = $("#c-error");
+        if ($("#c-pass").value !== $("#c-pass2").value) { err.textContent = "Las contraseñas no coinciden."; return; }
+        const r = HL.registrar({ nombre: $("#c-nombre").value, correo: $("#c-correo").value, pass: $("#c-pass").value });
+        err.textContent = r.ok ? "" : r.error;
+        if (!r.ok) return;
+        const ses = HL.login($("#c-correo").value, $("#c-pass").value);
+        HL.aviso("Cuenta creada. ¡Bienvenido!");
+        setTimeout(() => location.replace(ses.ok ? "intro.html" : "login.html"), 600);
+    });
+})();
