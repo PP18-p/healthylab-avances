@@ -1,8 +1,12 @@
 "use strict";
 
+/* ===== ACCESO: esta página exige sesión (cualquier rol) ===== */
+if (!HL.sesion()) { location.replace("login.html"); throw new Error("Sesión requerida"); }
+document.body.hidden = false;
+
 const $ = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
-const norm = t => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const norm = t => t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 const esc = t => String(t).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 /* ===== ESTADO (se guarda en el navegador con localStorage) ===== */
@@ -286,7 +290,8 @@ function abrirReceta(id) {
                 const nom = $("#m-nom").value.trim(), txt = $("#m-txt").value.trim();
                 if (!estrellas) return aviso("Elige de 1 a 5 estrellas.");
                 if (txt.length < 5) return aviso("Escribe un comentario de al menos 5 caracteres.");
-                (E.resenas[id] = E.resenas[id] || []).push({ n: nom || "Anónimo", e: estrellas, t: txt });
+                /* f = fecha de publicación (la usa el panel de administración) */
+                (E.resenas[id] = E.resenas[id] || []).push({ n: nom || "Anónimo", e: estrellas, t: txt, f: Date.now() });
                 guardar(); estrellas = 0; pintarEst(); pintarRes();
                 $("#m-nom").value = ""; $("#m-txt").value = "";
                 aviso("Gracias por tu valoración.");

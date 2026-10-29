@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HealthyLab</title>
-    <link rel="stylesheet" href="intro.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -14,8 +14,8 @@
             <a href="#inicio" class="logo">Healthy<span>Lab</span></a>
 
             <nav class="nav" id="nav" aria-label="Principal">
-                <a href="login/login.html?modo=registro" class="nav__link">Regístrate</a>
-                <a href="login/login.html" class="nav__link">Inicia sesión</a>
+                <a href="login.html#crear" class="nav__link">Regístrate</a>
+                <a href="login.html" class="nav__link">Inicia sesión</a>
             </nav>
         </div>
     </header>
@@ -25,7 +25,7 @@
             <h1>HealthyLab</h1>
             <h2>Un lugar para empezar a cuidar tu alimentación sin tanta ciencia</h2>
             <button type="button" class="filtro" data-filtro="Únete"
-                onclick="location.href='login/login.html?modo=registro'">Únete</button>
+                onclick="location.href='login.html#crear'">Únete</button>
         </section>
 
         <section class="bloque">
@@ -93,7 +93,7 @@
         <section class="llamado">
             <h3>¿Listo para empezar?</h3>
             <p>Únete a HealthyLab y arma tu forma de comer, a tu ritmo.</p>
-            <button type="button" class="filtro" onclick="location.href='login.html?modo=registro'">Crear mi
+            <button type="button" class="filtro" onclick="location.href='login.html#crear'">Crear mi
                 cuenta</button>
         </section>
     </main>
@@ -101,6 +101,9 @@
     <footer class="pie">
         <p>Healthy<span>Lab</span> · Cuida tu alimentación sin tanta ciencia</p>
     </footer>
+
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

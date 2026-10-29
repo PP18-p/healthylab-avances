@@ -4,9 +4,12 @@
     const $ = (s, c = document) => c.querySelector(s);
     const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 
+    /* A dónde va cada rol después de entrar */
+    const destino = rol => rol === "admin" ? "admin.html" : "hlp.html";
+
     /* Si ya hay una sesión activa, se redirige */
     const ses = HL.sesion();
-    if (ses) { location.replace(ses.rol === "admin" ? "admin.html" : "intro.html"); return; }
+    if (ses) { location.replace(destino(ses.rol)); return; }
 
     /* ===== Pestañas ===== */
     const TXT = {
@@ -71,7 +74,7 @@
         $("#e-error").textContent = r.ok ? "" : r.error;
         if (!r.ok) { $("#e-pass").value = ""; limpiar($("#f-entrar")); $("#e-pass").focus(); return; }
         HL.aviso(r.rol === "admin" ? "Entrando al panel..." : "Sesión iniciada.");
-        setTimeout(() => location.replace(r.rol === "admin" ? "admin.html" : "intro.html"), 500);
+        setTimeout(() => location.replace(destino(r.rol)), 500);
     });
 
     /* ===== Crear cuenta ===== */
@@ -84,6 +87,6 @@
         if (!r.ok) return;
         const entrada = HL.login($("#c-correo").value, $("#c-pass").value);
         HL.aviso("Cuenta creada. ¡Bienvenido!");
-        setTimeout(() => location.replace(entrada.ok ? "intro.html" : "login.html"), 600);
+        setTimeout(() => location.replace(entrada.ok ? "hlp.html" : "login.html"), 600);
     });
 })();
