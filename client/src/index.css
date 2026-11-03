@@ -1,0 +1,4 @@
+/* Estilos globales mínimos. Los de cada página van en src/styles y dentro de su propio contenedor. */
+body {
+    margin: 0;
+}

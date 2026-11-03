@@ -1,6 +1,8 @@
-/* ===== HealthyLab | Login (autónomo: no necesita style.css) ===== */
+/* ===== HealthyLab | Login =====
+   Todo va dentro de .pagina-login para que sus reglas (antes de body y :root)
+   no afecten a las demás páginas de la aplicación. */
 
-:root {
+.pagina-login {
     --verde: #2e7d32;
     --verde-hover: #256628;
     --verde-profundo: #1b5e20;
@@ -17,7 +19,7 @@
     --cuerpo: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-:root[data-tema="oscuro"] {
+:root[data-tema="oscuro"] .pagina-login {
     --verde: #66bb6a;
     --verde-hover: #7ccd80;
     --verde-profundo: #0f2a13;
@@ -31,15 +33,15 @@
     --sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
 }
 
-*,
-*::before,
-*::after {
+.pagina-login *,
+.pagina-login *::before,
+.pagina-login *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
+.pagina-login {
     font-family: var(--cuerpo);
     font-size: 1.0625rem;
     line-height: 1.6;
@@ -53,23 +55,22 @@ body {
     transition: background-color .4s ease, color .4s ease;
 }
 
-a {
+.pagina-login a {
     color: var(--verde);
     font-weight: 600;
 }
 
-:focus-visible {
+.pagina-login :focus-visible {
     outline: 3px solid var(--lima);
     outline-offset: 3px;
     border-radius: 6px;
 }
 
-[hidden] {
+.pagina-login [hidden] {
     display: none !important;
 }
 
-/* ===== BOTÓN DE TEMA ===== */
-.tema {
+.pagina-login .tema {
     position: fixed;
     top: 16px;
     right: 16px;
@@ -87,11 +88,11 @@ a {
     transition: border-color .2s ease;
 }
 
-.tema:hover {
+.pagina-login .tema:hover {
     border-color: var(--verde);
 }
 
-.tema svg {
+.pagina-login .tema svg {
     width: 22px;
     height: 22px;
     fill: none;
@@ -101,20 +102,19 @@ a {
     stroke-linejoin: round;
 }
 
-.icono-sol {
+.pagina-login .icono-sol {
     display: none;
 }
 
-:root[data-tema="oscuro"] .icono-luna {
+:root[data-tema="oscuro"] .pagina-login .icono-luna {
     display: none;
 }
 
-:root[data-tema="oscuro"] .icono-sol {
+:root[data-tema="oscuro"] .pagina-login .icono-sol {
     display: block;
 }
 
-/* ===== TARJETA ===== */
-.tarjeta-login {
+.pagina-login .tarjeta-login {
     width: 100%;
     max-width: 440px;
     background: var(--superficie);
@@ -125,7 +125,7 @@ a {
     text-align: center;
 }
 
-.logo {
+.pagina-login .logo {
     display: inline-block;
     font-family: var(--titulos);
     font-weight: 700;
@@ -135,11 +135,11 @@ a {
     letter-spacing: -.01em;
 }
 
-.logo span {
+.pagina-login .logo span {
     color: var(--lima);
 }
 
-#titulo {
+.pagina-login #titulo {
     font-family: var(--titulos);
     font-size: 1.8rem;
     line-height: 1.2;
@@ -147,14 +147,13 @@ a {
     margin: 10px 0 6px;
 }
 
-.subtitulo {
+.pagina-login .subtitulo {
     color: var(--texto-suave);
     font-size: .97rem;
     margin-bottom: 22px;
 }
 
-/* ===== PESTAÑAS ===== */
-.pestanas {
+.pagina-login .pestanas {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4px;
@@ -165,7 +164,7 @@ a {
     margin-bottom: 24px;
 }
 
-.pestana {
+.pagina-login .pestana {
     font: 600 .95rem var(--cuerpo);
     color: var(--texto-suave);
     background: transparent;
@@ -176,39 +175,38 @@ a {
     transition: background-color .2s ease, color .2s ease;
 }
 
-.pestana:hover {
+.pagina-login .pestana:hover {
     color: var(--texto);
 }
 
-.pestana.activo {
+.pagina-login .pestana.activo {
     background: var(--verde);
     color: #fff;
 }
 
-:root[data-tema="oscuro"] .pestana.activo {
+:root[data-tema="oscuro"] .pagina-login .pestana.activo {
     color: #0d1a0f;
 }
 
-/* ===== FORMULARIO ===== */
-.formulario {
+.pagina-login .formulario {
     display: flex;
     flex-direction: column;
     gap: 18px;
     text-align: left;
 }
 
-.campo {
+.pagina-login .campo {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-.campo label {
+.pagina-login .campo label {
     font-weight: 600;
     font-size: .95rem;
 }
 
-.campo input {
+.pagina-login .campo input {
     width: 100%;
     font: inherit;
     color: var(--texto);
@@ -219,40 +217,38 @@ a {
     transition: border-color .2s ease, box-shadow .2s ease;
 }
 
-.campo input::placeholder {
+.pagina-login .campo input::placeholder {
     color: var(--texto-suave);
     opacity: .8;
 }
 
-.campo input:focus {
+.pagina-login .campo input:focus {
     outline: none;
     border-color: var(--verde);
     box-shadow: 0 0 0 4px var(--menta);
 }
 
-/* Estados de validación (los pone login.js) */
-.campo.invalido input {
+.pagina-login .campo.invalido input {
     border-color: var(--error);
 }
 
-.campo.valido input {
+.pagina-login .campo.valido input {
     border-color: var(--verde);
 }
 
-.campo.invalido input:focus {
+.pagina-login .campo.invalido input:focus {
     box-shadow: 0 0 0 4px rgba(198, 40, 40, .15);
 }
 
-/* Campo de contraseña con botón mostrar/ocultar */
-.clave {
+.pagina-login .clave {
     position: relative;
 }
 
-.clave input {
+.pagina-login .clave input {
     padding-right: 96px;
 }
 
-.ver {
+.pagina-login .ver {
     position: absolute;
     right: 8px;
     top: 50%;
@@ -266,30 +262,29 @@ a {
     cursor: pointer;
 }
 
-.ver:hover {
+.pagina-login .ver:hover {
     background: var(--menta);
 }
 
-.error {
+.pagina-login .error {
     color: var(--error);
     font-size: .87rem;
     min-height: 1.2em;
 }
 
-.error--general {
+.pagina-login .error--general {
     text-align: center;
     font-weight: 600;
     min-height: 0;
 }
 
-.error--general:not(:empty) {
+.pagina-login .error--general:not(:empty) {
     background: rgba(198, 40, 40, .1);
     border-radius: 10px;
     padding: 10px 14px;
 }
 
-/* ===== BOTÓN ===== */
-.boton {
+.pagina-login .boton {
     display: block;
     width: 100%;
     margin-top: 4px;
@@ -303,29 +298,27 @@ a {
     transition: background-color .2s ease, transform .15s ease;
 }
 
-:root[data-tema="oscuro"] .boton {
+:root[data-tema="oscuro"] .pagina-login .boton {
     color: #0d1a0f;
 }
 
-.boton:hover {
+.pagina-login .boton:hover {
     background: var(--verde-hover);
     border-color: var(--verde-hover);
 }
 
-.boton:active {
+.pagina-login .boton:active {
     transform: scale(.97);
 }
 
-/* ===== ENLACES ===== */
-.enlaces {
+.pagina-login .enlaces {
     margin-top: 18px;
     font-size: .93rem;
     color: var(--texto-suave);
     text-align: center;
 }
 
-/* ===== AVISO ===== */
-.aviso {
+.pagina-login .aviso {
     position: fixed;
     left: 50%;
     bottom: 28px;
@@ -342,27 +335,25 @@ a {
     transition: opacity .3s ease, transform .3s ease;
 }
 
-.aviso.visible {
+.pagina-login .aviso.visible {
     opacity: 1;
     transform: translate(-50%, 0);
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 560px) {
-    body {
+.pagina-login {
         font-size: 1rem;
     }
 
-    .tarjeta-login {
+.pagina-login .tarjeta-login {
         padding: 28px 20px 24px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
+.pagina-login *,
+.pagina-login *::before,
+.pagina-login *::after {
         animation: none !important;
         transition-duration: .01ms !important;
     }
