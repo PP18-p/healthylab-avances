@@ -1,10 +1,12 @@
+/* ===== HealthyLab | Panel de administración =====
+   Va dentro de .pagina-admin. Los estilos base (colores, botones, formularios, ventanas)
+   vienen de hlp.css, que se carga junto con este archivo. */
 /* Login y panel de administración. Reutiliza las variables y componentes de style.css */
-
-.suave {
+.pagina-admin .suave {
     color: var(--texto-suave);
 }
 
-.encabezado button.nav__link {
+.pagina-admin .encabezado button.nav__link {
     background: none;
     border: none;
     color: inherit;
@@ -12,11 +14,11 @@
     cursor: pointer;
 }
 
-.encabezado .acciones {
+.pagina-admin .encabezado .acciones {
     margin-left: auto;
 }
 
-.chip {
+.pagina-admin .chip {
     background: rgba(255, 255, 255, .2);
     color: #fff;
     font-size: .78rem;
@@ -28,123 +30,69 @@
     margin-right: auto;
 }
 
-/* ===== LOGIN ===== */
-.auth {
-    max-width: none;
-    min-height: calc(100vh - 72px);
-    display: grid;
-    place-items: center;
-    padding: 40px 18px;
-}
-
-.auth__card {
-    width: min(440px, 100%);
-    background: var(--superficie);
-    border-radius: 20px;
-    box-shadow: var(--sombra);
-    padding: 32px;
-    display: grid;
-    gap: 22px;
-}
-
-.auth__card h1 {
-    font-size: 1.9rem;
-    color: var(--verde);
-    margin-bottom: 4px;
-}
-
-.auth__card .filtros {
-    justify-content: center;
-}
-
-.auth__card form {
-    display: grid;
-    gap: 18px;
-}
-
-.auth__card form[hidden] {
-    display: none;
-}
-
-.clave {
-    position: relative;
-}
-
-.clave input {
-    padding-right: 92px;
-}
-
-.clave .mini {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 5px 12px;
-}
-
 /* ===== PANEL ===== */
-.panel-main {
+.pagina-admin .panel-main {
     padding-top: 36px;
     padding-bottom: 8px;
 }
 
-.vista-tit {
+.pagina-admin .vista-tit {
     font-size: clamp(1.8rem, 4vw, 2.4rem);
     color: var(--verde);
     margin-bottom: 18px;
 }
 
-.sub-tit {
+.pagina-admin .sub-tit {
     font-size: 1.4rem;
     color: var(--verde);
 }
 
-.tabs {
+.pagina-admin .tabs {
     margin-bottom: 28px;
 }
 
-.vista[hidden] {
+.pagina-admin .vista[hidden] {
     display: none;
 }
 
-.kpis {
+.pagina-admin .kpis {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
     margin-bottom: 20px;
 }
 
-.kpi,
-.panel {
+.pagina-admin .kpi,
+.pagina-admin .panel {
     background: var(--superficie);
     border-radius: var(--radio);
     box-shadow: var(--sombra);
 }
 
-.kpi {
+.pagina-admin .kpi {
     padding: 20px;
     display: grid;
     gap: 4px;
 }
 
-.kpi span {
+.pagina-admin .kpi span {
     color: var(--texto-suave);
     font-size: .92rem;
     font-weight: 600;
 }
 
-.kpi strong {
+.pagina-admin .kpi strong {
     font-family: var(--titulos);
     font-size: 2.2rem;
     line-height: 1.1;
     color: var(--verde);
 }
 
-.kpi small {
+.pagina-admin .kpi small {
     color: var(--texto-suave);
 }
 
-.vivo::before {
+.pagina-admin .vivo::before {
     content: "";
     display: inline-block;
     width: 9px;
@@ -168,43 +116,42 @@
         box-shadow: 0 0 0 0 rgba(165, 214, 92, 0);
     }
 }
-
-.rejilla2 {
+.pagina-admin .rejilla2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     margin-bottom: 16px;
 }
 
-.panel {
+.pagina-admin .panel {
     padding: 22px;
 }
 
-.panel h3 {
+.pagina-admin .panel h3 {
     font-size: 1.2rem;
     color: var(--verde);
     margin-bottom: 14px;
 }
 
-.panel form {
+.pagina-admin .panel form {
     display: grid;
     gap: 16px;
     max-width: 420px;
 }
 
-.panel .fila {
+.pagina-admin .panel .fila {
     margin-bottom: 8px;
 }
 
 /* Gráfico de barras */
-.barras {
+.pagina-admin .barras {
     display: flex;
     align-items: flex-end;
     gap: 5px;
     height: 190px;
 }
 
-.barra {
+.pagina-admin .barra {
     flex: 1;
     min-width: 0;
     display: flex;
@@ -215,7 +162,7 @@
     height: 100%;
 }
 
-.barra i {
+.pagina-admin .barra i {
     display: block;
     width: 100%;
     max-width: 44px;
@@ -226,30 +173,30 @@
     transition: height .4s ease;
 }
 
-.barra b {
+.pagina-admin .barra b {
     font-size: .78rem;
     font-weight: 600;
 }
 
-.barra small {
+.pagina-admin .barra small {
     font-size: .74rem;
     color: var(--texto-suave);
     min-height: 1.1em;
     white-space: nowrap;
 }
 
-.barras.densa .barra b {
+.pagina-admin .barras.densa .barra b {
     display: none;
 }
 
 /* Ranking */
-.rank {
+.pagina-admin .rank {
     list-style: none;
     display: grid;
     gap: 14px;
 }
 
-.rank div {
+.pagina-admin .rank div {
     display: flex;
     justify-content: space-between;
     gap: 12px;
@@ -257,7 +204,7 @@
     margin-bottom: 4px;
 }
 
-.rank .f {
+.pagina-admin .rank .f {
     display: block;
     height: 8px;
     border-radius: 8px;
@@ -265,7 +212,7 @@
     overflow: hidden;
 }
 
-.rank .f i {
+.pagina-admin .rank .f i {
     display: block;
     height: 100%;
     width: var(--w);
@@ -273,13 +220,13 @@
     border-radius: 8px;
 }
 
-.feed {
+.pagina-admin .feed {
     list-style: none;
     display: grid;
     gap: 8px;
 }
 
-.feed li {
+.pagina-admin .feed li {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -290,27 +237,27 @@
     font-size: .94rem;
 }
 
-.feed small {
+.pagina-admin .feed small {
     color: var(--texto-suave);
     white-space: nowrap;
 }
 
 /* Tabla */
-.tabla-wrap {
+.pagina-admin .tabla-wrap {
     overflow-x: auto;
     background: var(--superficie);
     border-radius: var(--radio);
     box-shadow: var(--sombra);
 }
 
-.tabla {
+.pagina-admin .tabla {
     width: 100%;
     min-width: 760px;
     border-collapse: collapse;
 }
 
-.tabla th,
-.tabla td {
+.pagina-admin .tabla th,
+.pagina-admin .tabla td {
     padding: 14px 16px;
     text-align: left;
     font-size: .95rem;
@@ -318,18 +265,18 @@
     vertical-align: middle;
 }
 
-.tabla th {
+.pagina-admin .tabla th {
     font-size: .78rem;
     text-transform: uppercase;
     letter-spacing: .05em;
     color: var(--texto-suave);
 }
 
-.tabla tbody tr:last-child td {
+.pagina-admin .tabla tbody tr:last-child td {
     border-bottom: none;
 }
 
-.tabla .nom {
+.pagina-admin .tabla .nom {
     background: none;
     border: none;
     font: 600 1rem var(--cuerpo);
@@ -341,11 +288,11 @@
     text-underline-offset: 4px;
 }
 
-.tabla .nom:hover {
+.pagina-admin .tabla .nom:hover {
     color: var(--verde);
 }
 
-.estado {
+.pagina-admin .estado {
     display: inline-block;
     padding: 3px 12px;
     border-radius: 999px;
@@ -353,51 +300,51 @@
     font-weight: 600;
 }
 
-.estado--activo {
+.pagina-admin .estado--activo {
     background: var(--menta);
     color: var(--verde);
 }
 
-.estado--suspendido {
+.pagina-admin .estado--suspendido {
     background: color-mix(in srgb, var(--error) 14%, transparent);
     color: var(--error);
 }
 
-.acc {
+.pagina-admin .acc {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
 }
 
-.mini--peligro {
+.pagina-admin .mini--peligro {
     color: var(--error);
 }
 
-.mini--peligro:hover {
+.pagina-admin .mini--peligro:hover {
     border-color: var(--error);
 }
 
-.dlg dl {
+.pagina-admin .dlg dl {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 8px 18px;
     margin-top: 8px;
 }
 
-.dlg dt {
+.pagina-admin .dlg dt {
     color: var(--texto-suave);
 }
 
-.dlg form {
+.pagina-admin .dlg form {
     display: grid;
     gap: 16px;
 }
 
-.dlg p {
+.pagina-admin .dlg p {
     margin-bottom: 14px;
 }
 
-.clave-temp {
+.pagina-admin .clave-temp {
     font-family: ui-monospace, Menlo, Consolas, monospace;
     font-size: 1.3rem;
     letter-spacing: .04em;
@@ -410,17 +357,30 @@
 }
 
 @media (max-width: 800px) {
-    .rejilla2 {
+    .pagina-admin .rejilla2 {
         grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 560px) {
-    .auth__card {
-        padding: 24px 20px;
+    .pagina-admin .panel {
+        padding: 18px;
     }
 
-    .panel {
-        padding: 18px;
+    /* El encabezado cabe en pantallas angostas pasando los botones a una segunda fila */
+    .pagina-admin .encabezado__interior {
+        flex-wrap: wrap;
+        gap: 6px 12px;
+        padding: 10px 16px;
+    }
+
+    .pagina-admin .encabezado .acciones {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .pagina-admin .chip {
+        margin-right: 0;
+        margin-left: auto;
     }
 }
