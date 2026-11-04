@@ -2,3 +2,14 @@
 body {
     margin: 0;
 }
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 84px; /* para que el encabezado pegado no tape los títulos al ir a un #enlace */
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
