@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useAviso } from "../hooks/useAviso";
-import { obtenerSesion } from "../services/auth";
+import { sesionVencida } from "../services/auth";
 import Aviso from "../components/Aviso";
 import BotonTema from "../components/BotonTema";
 import Ajustes from "../components/admin/Ajustes";
@@ -36,7 +36,7 @@ export default function Admin() {
         addEventListener("hashchange", alHash);
         addEventListener("storage", alStorage);
         const t = setInterval(async () => {
-            if (!await obtenerSesion()) { salir(); return; } // la sesión venció
+            if (await sesionVencida()) { salir(); return; }
             refrescar();
         }, 5000);
         return () => { removeEventListener("hashchange", alHash); removeEventListener("storage", alStorage); clearInterval(t); };

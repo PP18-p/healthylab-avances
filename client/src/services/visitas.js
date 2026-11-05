@@ -1,6 +1,7 @@
 /* ===== RASTREO DE VISITAS =====
-   Guarda en localStorage con las mismas claves que el sitio anterior (hl_visitas, hl_activos, hl_vid)
-   para que el panel de administración lea los datos igual. */
+   Se envían al servidor, que toma el nombre de la persona de la sesión.
+   El identificador del navegador (hl_vid) y el de la pestaña (hl_sid) siguen guardándose aquí. */
+import { api } from "./api";
 import { LS, rnd } from "./auth";
 
 /* Nombres de página que entiende el panel de admin (los del sitio anterior) */
@@ -24,25 +25,23 @@ function dispositivo() {
     return /iPad|Tablet/i.test(ua) ? "Tablet" : /Mobi|Android|iPhone/i.test(ua) ? "Móvil" : "Escritorio";
 }
 
-export function registrarVisita(pagina, quien) {
-    let vid = LS.get("hl_vid", null);
-    if (!vid) { vid = rnd(10); LS.set("hl_vid", vid); }
-    const ev = LS.get("hl_visitas", []);
-    ev.push({ t: Date.now(), v: vid, s: sid(), p: pagina, d: dispositivo(), u: quien });
-    if (ev.length > 3000) ev.splice(0, ev.length - 3000);
-    LS.set("hl_visitas", ev);
+function vid() {
+    let v = LS.get("hl_vid", null);
+    if (!v) { v = rnd(10); LS.set("hl_vid", v); }
+    return v;
+}
+
+export function registrarVisita(pagina) {
+    return api("/visitas", { metodo: "POST", datos: { vid: vid(), sid: sid(), pagina, disp: dispositivo() } });
 }
 
 /* Marca a la persona como «conectada ahora» */
-export function latido(pagina, quien) {
-    const a = LS.get("hl_activos", {}), lim = Date.now() - 120000;
-    for (const id in a) if (a[id].t < lim) delete a[id];
-    a[sid()] = { t: Date.now(), p: pagina, d: dispositivo(), u: quien };
-    LS.set("hl_activos", a);
+export function latido(pagina) {
+    return api("/visitas/latido", { metodo: "POST", datos: { sid: sid(), pagina, disp: dispositivo() } });
 }
 
+/* sendBeacon entrega el aviso aunque la página se esté cerrando */
 export function quitarActivo() {
-    const a = LS.get("hl_activos", {});
-    delete a[sid()];
-    LS.set("hl_activos", a);
+    const datos = new Blob([JSON.stringify({ sid: sid() })], { type: "application/json" });
+    navigator.sendBeacon("/api/visitas/quitar-activo", datos);
 }

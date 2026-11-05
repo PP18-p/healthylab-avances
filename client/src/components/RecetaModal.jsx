@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useAuth } from "../context/AuthContext";
 import { buscarSustituto } from "../data/recetas";
-import { guardarEstado, leerEstado } from "../services/estado";
+import { cargarResenas, publicarResena } from "../services/estado";
 import { fmtIng, num } from "../utils/formato";
 import { aItems } from "../utils/lista";
 import { callar, hablar } from "../utils/voz";
@@ -9,11 +8,12 @@ import Aviso from "./Aviso";
 
 /* Ficha de una receta. Se monta solo cuando hay una receta abierta (con key = id). */
 export default function RecetaModal({ receta, favorita, onFavorita, onCocina, onAgregarALista, onCerrar, aviso, avisar }) {
-    const { sesion } = useAuth();
     const ref = useRef(null);
     const [porciones, setPorciones] = useState(receta.porciones);
     const [sustAbiertas, setSustAbiertas] = useState([]);
-    const [resenas, setResenas] = useState(() => leerEstado().resenas[receta.id] || []);
+    const [resenas, setResenas] = useState([]);
+    const [estadoResenas, setEstadoResenas] = useState("cargando"); // "cargando" | "listo" | "error"
+    const [publicando, setPublicando] = useState(false);
     const [estrellas, setEstrellas] = useState(0);
     const [texto, setTexto] = useState("");
     const [leyendo, setLeyendo] = useState(false);
@@ -22,6 +22,16 @@ export default function RecetaModal({ receta, favorita, onFavorita, onCocina, on
         const d = ref.current;
         if (d && !d.open) d.showModal();
     }, []);
+
+    useEffect(() => {
+        let vivo = true;
+        cargarResenas(receta.id).then(r => {
+            if (!vivo) return;
+            if (r.ok) setResenas(r.resenas);
+            setEstadoResenas(r.ok ? "listo" : "error");
+        });
+        return () => { vivo = false; };
+    }, [receta.id]);
 
     /* Al cerrar la ficha se corta la lectura en voz alta */
     useEffect(() => () => callar(), []);
@@ -47,15 +57,15 @@ export default function RecetaModal({ receta, favorita, onFavorita, onCocina, on
 
     const alternarSust = k => setSustAbiertas(s => s.includes(k) ? s.filter(x => x !== k) : [...s, k]);
 
-    function publicar() {
+    async function publicar() {
         if (!estrellas) return avisar("Elige de 1 a 5 estrellas.");
         if (texto.trim().length < 5) return avisar("Escribe un comentario de al menos 5 caracteres.");
-        /* f = fecha de publicación (la usa el panel de administración) */
-        const nueva = { n: sesion.nombre, e: estrellas, t: texto.trim(), f: Date.now() };
-        const todas = leerEstado().resenas;
-        const lista = [...(todas[receta.id] || []), nueva];
-        guardarEstado({ resenas: { ...todas, [receta.id]: lista } });
-        setResenas(lista);
+        setPublicando(true);
+        /* El nombre lo pone el servidor a partir de la sesión */
+        const r = await publicarResena({ receta: receta.id, estrellas, texto: texto.trim() });
+        setPublicando(false);
+        if (!r.ok) return avisar(r.error);
+        setResenas(l => [...l, r.resena]);
         setEstrellas(0); setTexto("");
         avisar("Gracias por tu valoración.");
     }
@@ -77,7 +87,7 @@ export default function RecetaModal({ receta, favorita, onFavorita, onCocina, on
                 <div className="rm__meta">
                     <span>{receta.minutos} minutos</span>
                     <span>{receta.categoria}</span>
-                    <span>{resenas.length ? `★ ${num(promedio)} (${resenas.length})` : "Sin valoraciones"}</span>
+                    <span>{resenas.length ? `★ ${num(promedio)} (${resenas.length})` : estadoResenas === "listo" ? "Sin valoraciones" : ""}</span>
                 </div>
                 <div className="rm__acciones">
                     <button className="mini mini--p" type="button" onClick={onCocina}>Modo cocina</button>
@@ -133,11 +143,11 @@ export default function RecetaModal({ receta, favorita, onFavorita, onCocina, on
                 <h3>Valoraciones y comentarios</h3>
                 <div>
                     {resenas.length ? resenas.slice().reverse().map(r => (
-                        <div className="resena" key={`${r.f}-${r.n}-${r.t}`}>
+                        <div className="resena" key={r.id}>
                             <b>{r.n}</b><span className="est">{"★".repeat(r.e)}</span>
                             <p>{r.t}</p>
                         </div>
-                    )) : <p className="vacio" style={{ padding: "8px 0" }}>Sé la primera persona en valorar esta receta.</p>}
+                    )) : <p className="vacio" style={{ padding: "8px 0" }}>{{ cargando: "Cargando valoraciones...", error: "No se pudieron cargar las valoraciones.", listo: "Sé la primera persona en valorar esta receta." }[estadoResenas]}</p>}
                 </div>
                 <div className="resena-form">
                     <div className="estrellas" role="group" aria-label="Tu valoración">
@@ -146,7 +156,7 @@ export default function RecetaModal({ receta, favorita, onFavorita, onCocina, on
                         ))}
                     </div>
                     <textarea placeholder="¿Qué te pareció la receta?" maxLength={300} value={texto} onChange={e => setTexto(e.target.value)} />
-                    <button className="mini mini--p" type="button" onClick={publicar}>Publicar valoración</button>
+                    <button className="mini mini--p" type="button" disabled={publicando} onClick={publicar}>Publicar valoración</button>
                 </div>
             </div>
 

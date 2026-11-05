@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { RECETAS } from "../data/recetas";
 import { useAviso } from "../hooks/useAviso";
-import { guardarEstado, leerEstado } from "../services/estado";
+import { cargarEstado, guardarEstado, guardarGrande, leerGrande } from "../services/estado";
 import { norm } from "../utils/formato";
 import { pendientes, sumarALista } from "../utils/lista";
 import Aviso from "../components/Aviso";
@@ -30,18 +30,21 @@ export default function Hlp() {
     const [aviso, avisar] = useAviso();
     const [busqueda, setBusqueda] = useState("");
     const [filtro, setFiltro] = useState("todas");
-    const [favs, setFavs] = useState(() => leerEstado().favs);
+    const [favs, setFavs] = useState([]);
     const [abierta, setAbierta] = useState(null); // id de la receta abierta
-    const [lista, setLista] = useState(() => leerEstado().lista || []);
-    const [plan, setPlan] = useState(() => leerEstado().plan || {});
+    const [lista, setLista] = useState([]);
+    const [plan, setPlan] = useState({});
     const [herramienta, setHerramienta] = useState(null); // "lista" | "favoritos" | "plan" | "despensa"
     const [cocina, setCocina] = useState(null); // id de la receta en modo cocina
     const [menu, setMenu] = useState(false);
-    const [textoGrande, setTextoGrande] = useState(() => !!leerEstado().grande);
+    const [textoGrande, setTextoGrande] = useState(leerGrande);
     const [seccion, setSeccion] = useState("inicio");
     const [sombra, setSombra] = useState(false);
     const [verSubir, setVerSubir] = useState(false);
     const botonMenu = useRef(null);
+    /* Última lista y plan que tiene el servidor. Es null hasta cargarlos: así los valores
+       vacíos del inicio nunca sobrescriben los datos guardados de la cuenta. */
+    const enServidor = useRef(null);
 
     useEffect(() => { document.title = "HealthyLab | Recetas nutritivas"; }, []);
 
@@ -62,8 +65,36 @@ export default function Hlp() {
         return () => document.documentElement.classList.remove("texto-grande");
     }, [textoGrande]);
 
-    useEffect(() => { guardarEstado({ lista }); }, [lista]);
-    useEffect(() => { guardarEstado({ plan }); }, [plan]);
+    /* Carga los datos de la cuenta al abrir la página */
+    useEffect(() => {
+        let vivo = true;
+        cargarEstado().then(r => {
+            if (!vivo) return;
+            if (!r.ok) { avisar("No se pudieron cargar tus datos. Recarga la página."); return; }
+            enServidor.current = { lista: r.estado.lista, plan: r.estado.plan };
+            setFavs(r.estado.favs);
+            setLista(r.estado.lista);
+            setPlan(r.estado.plan);
+        });
+        return () => { vivo = false; };
+    }, [avisar]);
+
+    const guardar = useCallback(async cambios => {
+        const r = await guardarEstado(cambios);
+        if (!r.ok) avisar("No se pudieron guardar tus cambios.");
+    }, [avisar]);
+
+    useEffect(() => {
+        if (!enServidor.current || enServidor.current.lista === lista) return;
+        enServidor.current.lista = lista;
+        guardar({ lista });
+    }, [lista, guardar]);
+
+    useEffect(() => {
+        if (!enServidor.current || enServidor.current.plan === plan) return;
+        enServidor.current.plan = plan;
+        guardar({ plan });
+    }, [plan, guardar]);
 
     const agregarALista = items => setLista(l => sumarALista(l, items));
 
@@ -73,14 +104,15 @@ export default function Hlp() {
     function alternarTextoGrande() {
         const nuevo = !textoGrande;
         setTextoGrande(nuevo);
-        guardarEstado({ grande: nuevo });
+        guardarGrande(nuevo);
     }
 
     function alternarFavorita(id) {
+        if (!enServidor.current) return avisar("Tus datos aún no están disponibles.");
         const esta = favs.includes(id);
         const nuevos = esta ? favs.filter(x => x !== id) : [...favs, id];
         setFavs(nuevos);
-        guardarEstado({ favs: nuevos });
+        guardar({ favs: nuevos });
         avisar(esta ? "Quitada de favoritos." : "Guardada en favoritos.");
     }
 

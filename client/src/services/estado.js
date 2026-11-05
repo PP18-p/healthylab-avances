@@ -1,16 +1,23 @@
 /* ===== ESTADO DE LA PÁGINA DE RECETAS =====
-   Favoritos, lista de compras, plan semanal, valoraciones y texto ampliado.
-   Se guarda en localStorage bajo la clave "hl", igual que el sitio anterior; el panel de
-   administración lee de ahí las valoraciones (resenas). En la fase B pasará a la API. */
+   Favoritos, lista de compras, plan semanal y valoraciones viven en el servidor.
+   El texto ampliado es una preferencia de este dispositivo y sigue en el navegador. */
+import { api } from "./api";
 import { LS } from "./auth";
 
-const BASE = { favs: [], lista: [], plan: {}, resenas: {}, grande: false };
+export const cargarEstado = () => api("/estado");
 
-export const leerEstado = () => ({ ...BASE, ...(LS.get("hl", {}) || {}) });
-
-/* Guarda solo lo que cambió, sin pisar el resto del objeto */
+/* Los cambios se envían de uno en uno para que lleguen en el orden en que se hicieron */
+let cola = Promise.resolve();
 export function guardarEstado(cambios) {
-    const nuevo = { ...leerEstado(), ...cambios };
-    LS.set("hl", nuevo);
-    return nuevo;
+    const envio = cola.then(() => api("/estado", { metodo: "PATCH", datos: cambios }));
+    cola = envio;
+    return envio;
 }
+
+/* ===== Valoraciones ===== */
+export const cargarResenas = receta => api(`/resenas/${receta}`);
+export const publicarResena = datos => api("/resenas", { metodo: "POST", datos });
+
+/* ===== Texto ampliado (antes se guardaba dentro de la clave "hl") ===== */
+export const leerGrande = () => !!LS.get("hl_grande", LS.get("hl", {})?.grande);
+export const guardarGrande = valor => LS.set("hl_grande", valor);

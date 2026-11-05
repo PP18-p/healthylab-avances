@@ -7,20 +7,20 @@ import { latido, nombrePagina, quitarActivo, registrarVisita } from "../services
 export default function Seguimiento() {
     const { pathname } = useLocation();
     const { sesion } = useAuth();
-    const quien = sesion ? sesion.nombre : null;
+    const quien = sesion ? sesion.nombre : null; // al iniciar o cerrar sesión se envía un latido enseguida
     const pagina = nombrePagina(pathname);
     const ultima = useRef("");
 
     useEffect(() => {
         if (pagina === "admin.html" || ultima.current === pagina) return;
         ultima.current = pagina;
-        registrarVisita(pagina, quien);
-    }, [pagina, quien]);
+        registrarVisita(pagina);
+    }, [pagina]);
 
     useEffect(() => {
         if (pagina === "admin.html") return;
-        latido(pagina, quien);
-        const t = setInterval(() => latido(pagina, quien), 15000);
+        latido(pagina);
+        const t = setInterval(() => latido(pagina), 15000);
         return () => clearInterval(t);
     }, [pagina, quien]);
 
