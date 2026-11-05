@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { RECETAS } from "../../data/recetas";
-import { eliminarResena, leerResenas } from "../../services/admin";
+import { useDatos } from "../../hooks/useDatos";
+import { cargarValoraciones, eliminarResena } from "../../services/admin";
 import { dec, estrellasTxt, fFecha, promedio } from "../../utils/estadisticas";
+import Carga from "./Carga";
 import { Kpi } from "./Graficos";
 
 const FILTROS = [[0, "Todas"], [5, "5 ★"], [4, "4 ★"], [3, "3 ★"], [2, "2 ★"], [1, "1 ★"]];
 
-export default function Valoraciones({ ui, refrescar }) {
+export default function Valoraciones({ ui, refrescar, version }) {
     const [estrellas, setEstrellas] = useState(0);
-    const todas = leerResenas();
+    const { datos: todas, error } = useDatos(cargarValoraciones, version);
+    if (!todas) return <Carga error={error} />;
+
     const porReceta = RECETAS.map(r => ({ id: r.id, t: r.titulo, l: Array.isArray(todas[r.id]) ? todas[r.id] : [] }));
     const total = porReceta.reduce((a, r) => a + r.l.length, 0);
     const valoradas = porReceta.filter(r => r.l.length);
@@ -17,12 +21,13 @@ export default function Valoraciones({ ui, refrescar }) {
     const ranking = valoradas.slice().sort((a, b) => promedio(b.l) - promedio(a.l));
 
     const filas = [];
-    porReceta.forEach(r => r.l.forEach((x, i) => { if (!estrellas || x.e === estrellas) filas.push({ rid: r.id, i, t: r.t, x }); }));
+    porReceta.forEach(r => r.l.forEach(x => { if (!estrellas || x.e === estrellas) filas.push({ t: r.t, x }); }));
     filas.sort((a, b) => (b.x.f || 0) - (a.x.f || 0));
 
     async function eliminar(f) {
         if (!await ui.confirmar("Eliminar comentario", `Se eliminará el comentario de ${f.x.n} en «${f.t}». Esta acción no se puede deshacer.`, "Eliminar")) return;
-        if (eliminarResena(f.rid, f.i)) ui.avisar("Comentario eliminado.");
+        const r = await eliminarResena(f.x.id);
+        ui.avisar(r.ok ? "Comentario eliminado." : r.error);
         refrescar();
     }
 
@@ -55,7 +60,7 @@ export default function Valoraciones({ ui, refrescar }) {
 
             {filas.length
                 ? <ul className="feed" style={{ gap: 10 }}>{filas.map(f => (
-                    <li key={`${f.rid}-${f.i}`} style={{ alignItems: "flex-start", flexWrap: "wrap" }}>
+                    <li key={f.x.id} style={{ alignItems: "flex-start", flexWrap: "wrap" }}>
                         <div style={{ flex: "1 1 280px" }}>
                             <b>{f.x.n}</b> <span aria-label={`${f.x.e} de 5 estrellas`} style={{ color: "#e5a50a" }}>{estrellasTxt(f.x.e)}</span>
                             <small className="suave" style={{ display: "block", whiteSpace: "normal" }}>{f.t}{f.x.f ? " · " + fFecha(f.x.f) : ""}</small>

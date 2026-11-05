@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { registrar } from "../../services/auth";
-import { alternarEstado, claveTemporal, eliminarCuenta, leerCuentas, restablecerClave } from "../../services/admin";
+import { useDatos } from "../../hooks/useDatos";
+import { alternarEstado, cargarCuentas, claveTemporal, eliminarCuenta, restablecerClave } from "../../services/admin";
 import { norm } from "../../utils/formato";
 import { descargar, fFecha } from "../../utils/estadisticas";
+import Carga from "./Carga";
 
 const ESTADOS = [["todas", "Todas"], ["activo", "Activas"], ["suspendido", "Suspendidas"]];
 
@@ -42,10 +44,12 @@ function FormNuevaCuenta({ cerrar, ui, refrescar }) {
     );
 }
 
-export default function Cuentas({ ui, refrescar }) {
+export default function Cuentas({ ui, refrescar, version }) {
     const [busqueda, setBusqueda] = useState("");
     const [estado, setEstado] = useState("todas");
-    const todas = leerCuentas();
+    const { datos: todas, error } = useDatos(cargarCuentas, version);
+    if (!todas) return <Carga error={error} />;
+
     const lista = todas.filter(u => (estado === "todas" || u.estado === estado) && norm(u.nombre + " " + u.correo).includes(norm(busqueda.trim())));
 
     const detalle = u => ui.abrir(() => (
@@ -61,17 +65,18 @@ export default function Cuentas({ ui, refrescar }) {
         </>
     ));
 
-    function cambiarEstado(u) {
-        const nuevo = alternarEstado(u.id);
-        if (!nuevo) return;
-        ui.avisar(nuevo === "activo" ? "Cuenta activada." : "Cuenta suspendida.");
+    async function cambiarEstado(u) {
+        const r = await alternarEstado(u.id);
+        if (r.ok) ui.avisar(r.estado === "activo" ? "Cuenta activada." : "Cuenta suspendida.");
+        else ui.avisar(r.error);
         refrescar();
     }
 
     async function nuevaClave(u) {
         if (!await ui.confirmar("Restablecer contraseña", `Se generará una contraseña temporal para ${u.nombre}. La anterior dejará de funcionar.`, "Generar")) return;
-        const t = restablecerClave(u.id);
-        if (!t) return;
+        const r = await restablecerClave(u.id);
+        if (!r.ok) { ui.avisar(r.error); refrescar(); return; }
+        const t = r.clave;
         ui.abrir(cerrar => (
             <>
                 <h2>Contraseña temporal</h2>
@@ -87,8 +92,8 @@ export default function Cuentas({ ui, refrescar }) {
 
     async function borrar(u) {
         if (!await ui.confirmar("Eliminar cuenta", `Se eliminará la cuenta de ${u.nombre} (${u.correo}). Esta acción no se puede deshacer.`, "Eliminar")) return;
-        eliminarCuenta(u.id);
-        ui.avisar("Cuenta eliminada.");
+        const r = await eliminarCuenta(u.id);
+        ui.avisar(r.ok ? "Cuenta eliminada." : r.error);
         refrescar();
     }
 

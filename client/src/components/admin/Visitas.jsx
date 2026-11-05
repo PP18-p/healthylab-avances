@@ -1,16 +1,21 @@
 import { useState } from "react";
-import { leerConectados, leerVisitas } from "../../services/admin";
+import { useDatos } from "../../hooks/useDatos";
+import { cargarTrafico } from "../../services/admin";
 import { DIA, contar, fDia, hace, inicioDia, nombrePag, sesiones, unicos } from "../../utils/estadisticas";
+import Carga from "./Carga";
 import { Barras, Kpi, Ranking } from "./Graficos";
 
 const RANGOS = [[1, "Hoy"], [7, "7 días"], [30, "30 días"], [0, "Todo"]];
 
-export default function Visitas() {
+export default function Visitas({ version }) {
     const [rango, setRango] = useState(7);
-    const vivos = leerConectados();
+    const { datos, error } = useDatos(cargarTrafico, version);
+    if (!datos) return <Carga error={error} />;
+
+    const vivos = datos.conectados;
     const h0 = inicioDia();
     const desde = rango === 0 ? 0 : h0 - (rango - 1) * DIA;
-    const ev = leerVisitas().filter(e => e.t >= desde);
+    const ev = datos.visitas.filter(e => e.t >= desde);
     const ses = sesiones(ev);
 
     const n = rango === 1 ? 1 : rango === 0 ? 30 : rango, dias = [];

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node --watch --env-file=.env src/index.js",
     "start": "node --env-file=.env src/index.js",
-    "crear-admin": "node --env-file=.env src/scripts/crear-admin.js"
+    "crear-admin": "node --env-file=.env src/scripts/crear-admin.js",
+    "restablecer-admin": "node --env-file=.env src/scripts/restablecer-admin.js"
   },
   "keywords": [],
   "author": "José Paredes",

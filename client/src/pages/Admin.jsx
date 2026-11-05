@@ -21,25 +21,25 @@ export default function Admin() {
     const { salir } = useAuth();
     const [aviso, avisar] = useAviso();
     const [vista, setVista] = useState(vistaDelHash);
-    const [, setTick] = useState(0);
+    const [version, setVersion] = useState(0); // al cambiar, la vista abierta vuelve a pedir sus datos
     const [ventana, setVentana] = useState(null); // { id, render, alCerrar }
     const contador = useRef(0);
 
-    const refrescar = useCallback(() => setTick(t => t + 1), []);
+    const refrescar = useCallback(() => setVersion(v => v + 1), []);
 
     useEffect(() => { document.title = "Panel de administración | HealthyLab"; }, []);
 
-    /* La vista queda en la dirección (#cuentas...) y se actualizan los datos solos */
+    /* La vista queda en la dirección (#cuentas...) y los datos se actualizan cada 15 s,
+       salvo con la pestaña oculta, para no consultar la base sin necesidad */
     useEffect(() => {
         const alHash = () => setVista(vistaDelHash());
-        const alStorage = () => refrescar();
         addEventListener("hashchange", alHash);
-        addEventListener("storage", alStorage);
         const t = setInterval(async () => {
+            if (document.hidden) return;
             if (await sesionVencida()) { salir(); return; }
             refrescar();
-        }, 5000);
-        return () => { removeEventListener("hashchange", alHash); removeEventListener("storage", alStorage); clearInterval(t); };
+        }, 15000);
+        return () => { removeEventListener("hashchange", alHash); clearInterval(t); };
     }, [refrescar, salir]);
 
     function ir(v) {
@@ -89,10 +89,10 @@ export default function Admin() {
                     ))}
                 </div>
 
-                {vista === "resumen" && <Resumen />}
-                {vista === "cuentas" && <Cuentas ui={ui} refrescar={refrescar} />}
-                {vista === "trafico" && <Visitas />}
-                {vista === "valoraciones" && <Valoraciones ui={ui} refrescar={refrescar} />}
+                {vista === "resumen" && <Resumen version={version} />}
+                {vista === "cuentas" && <Cuentas ui={ui} refrescar={refrescar} version={version} />}
+                {vista === "trafico" && <Visitas version={version} />}
+                {vista === "valoraciones" && <Valoraciones ui={ui} refrescar={refrescar} version={version} />}
                 {vista === "ajustes" && <Ajustes ui={ui} refrescar={refrescar} />}
             </main>
 

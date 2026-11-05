@@ -21,9 +21,15 @@ export default function Ajustes({ ui, refrescar }) {
 
     async function reiniciar() {
         if (!await ui.confirmar("Reiniciar estadísticas", "Se borrará el historial de visitas. Las cuentas no se tocan.", "Reiniciar")) return;
-        reiniciarEstadisticas();
-        ui.avisar("Estadísticas reiniciadas.");
+        const r = await reiniciarEstadisticas();
+        ui.avisar(r.ok ? "Estadísticas reiniciadas." : r.error);
         refrescar();
+    }
+
+    async function respaldar() {
+        const r = await crearRespaldo();
+        if (!r.ok) { ui.avisar(r.error); return; }
+        descargar("respaldo-healthylab.json", JSON.stringify(r.datos, null, 2), "application/json");
     }
 
     return (
@@ -49,10 +55,10 @@ export default function Ajustes({ ui, refrescar }) {
                     <h3>Datos</h3>
                     <p className="suave">Descarga una copia de las cuentas (sin contraseñas) y de las estadísticas de visitas, o reinicia las estadísticas.</p>
                     <div className="fila">
-                        <button className="mini" type="button" onClick={() => descargar("respaldo-healthylab.json", JSON.stringify(crearRespaldo(), null, 2), "application/json")}>Descargar respaldo</button>
+                        <button className="mini" type="button" onClick={respaldar}>Descargar respaldo</button>
                         <button className="mini mini--peligro" type="button" onClick={reiniciar}>Reiniciar estadísticas</button>
                     </div>
-                    <p className="nut-nota">Los datos viven en este navegador (localStorage). Si limpias los datos del navegador, se pierden.</p>
+                    <p className="nut-nota">Los datos se guardan en la base de datos del servidor. Las visitas se borran solas a los 90 días.</p>
                 </div>
             </div>
         </section>

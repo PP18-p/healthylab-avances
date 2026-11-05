@@ -1,10 +1,14 @@
-import { usuarios } from "../../services/auth";
-import { leerConectados, leerVisitas } from "../../services/admin";
+import { useDatos } from "../../hooks/useDatos";
+import { cargarResumen } from "../../services/admin";
 import { DIA, contar, fDia, hace, inicioDia, nombrePag, unicos } from "../../utils/estadisticas";
+import Carga from "./Carga";
 import { Barras, Kpi, Ranking } from "./Graficos";
 
-export default function Resumen() {
-    const ev = leerVisitas(), us = usuarios(), h0 = inicioDia();
+export default function Resumen({ version }) {
+    const { datos, error } = useDatos(cargarResumen, version);
+    if (!datos) return <Carga error={error} />;
+
+    const { visitas: ev, cuentas: us, conectados } = datos, h0 = inicioDia();
     const hoy = ev.filter(e => e.t >= h0), sem = ev.filter(e => e.t >= h0 - 6 * DIA);
     const activas = us.filter(u => u.estado === "activo").length;
     const nuevas7 = us.filter(u => u.creado >= h0 - 6 * DIA).length, nuevasHoy = us.filter(u => u.creado >= h0).length;
@@ -31,7 +35,7 @@ export default function Resumen() {
     return (
         <section className="vista">
             <div className="kpis">
-                <Kpi titulo="Conectados ahora" valor={leerConectados().length} detalle="activos en los últimos 45 s" vivo />
+                <Kpi titulo="Conectados ahora" valor={conectados.length} detalle="activos en los últimos 45 s" vivo />
                 <Kpi titulo="Visitas hoy" valor={hoy.length} detalle={`${unicos(hoy)} visitantes únicos`} />
                 <Kpi titulo="Visitas en 7 días" valor={sem.length} detalle={`${unicos(sem)} visitantes únicos`} />
                 <Kpi titulo="Cuentas registradas" valor={us.length} detalle={`${activas} activas, ${us.length - activas} suspendidas`} />
