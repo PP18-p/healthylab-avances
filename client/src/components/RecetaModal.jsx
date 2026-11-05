@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { buscarSustituto } from "../data/recetas";
 import { guardarEstado, leerEstado } from "../services/estado";
 import { fmtIng, num } from "../utils/formato";
@@ -8,12 +9,12 @@ import Aviso from "./Aviso";
 
 /* Ficha de una receta. Se monta solo cuando hay una receta abierta (con key = id). */
 export default function RecetaModal({ receta, favorita, onFavorita, onCocina, onAgregarALista, onCerrar, aviso, avisar }) {
+    const { sesion } = useAuth();
     const ref = useRef(null);
     const [porciones, setPorciones] = useState(receta.porciones);
     const [sustAbiertas, setSustAbiertas] = useState([]);
     const [resenas, setResenas] = useState(() => leerEstado().resenas[receta.id] || []);
     const [estrellas, setEstrellas] = useState(0);
-    const [nombre, setNombre] = useState("");
     const [texto, setTexto] = useState("");
     const [leyendo, setLeyendo] = useState(false);
 
@@ -50,12 +51,12 @@ export default function RecetaModal({ receta, favorita, onFavorita, onCocina, on
         if (!estrellas) return avisar("Elige de 1 a 5 estrellas.");
         if (texto.trim().length < 5) return avisar("Escribe un comentario de al menos 5 caracteres.");
         /* f = fecha de publicación (la usa el panel de administración) */
-        const nueva = { n: nombre.trim() || "Anónimo", e: estrellas, t: texto.trim(), f: Date.now() };
+        const nueva = { n: sesion.nombre, e: estrellas, t: texto.trim(), f: Date.now() };
         const todas = leerEstado().resenas;
         const lista = [...(todas[receta.id] || []), nueva];
         guardarEstado({ resenas: { ...todas, [receta.id]: lista } });
         setResenas(lista);
-        setEstrellas(0); setNombre(""); setTexto("");
+        setEstrellas(0); setTexto("");
         avisar("Gracias por tu valoración.");
     }
 
@@ -144,7 +145,6 @@ export default function RecetaModal({ receta, favorita, onFavorita, onCocina, on
                             <button key={v} type="button" className={v <= estrellas ? "on" : ""} aria-label={`${v} de 5`} onClick={() => setEstrellas(v)}>★</button>
                         ))}
                     </div>
-                    <input type="text" placeholder="Tu nombre" maxLength={40} autoComplete="name" value={nombre} onChange={e => setNombre(e.target.value)} />
                     <textarea placeholder="¿Qué te pareció la receta?" maxLength={300} value={texto} onChange={e => setTexto(e.target.value)} />
                     <button className="mini mini--p" type="button" onClick={publicar}>Publicar valoración</button>
                 </div>
