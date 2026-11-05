@@ -1,3 +1,5 @@
 healthylab-react/
 node_modules/
 .env
+# Datos exportados del navegador: contienen correos y hashes
+server/importacion/
