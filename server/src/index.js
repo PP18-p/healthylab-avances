@@ -7,6 +7,7 @@ import cuentasRoutes from "./routes/cuentas.js";
 import estadoRoutes from "./routes/estado.js";
 import resenasRoutes from "./routes/resenas.js";
 import visitasRoutes from "./routes/visitas.js";
+import recetasRoutes from "./routes/recetas.js";
 
 if (!process.env.JWT_SECRET) {
     console.error("Falta JWT_SECRET en server/.env");
@@ -28,6 +29,7 @@ app.use("/api/cuentas", cuentasRoutes);
 app.use("/api/estado", estadoRoutes);
 app.use("/api/resenas", resenasRoutes);
 app.use("/api/visitas", visitasRoutes);
+app.use("/api/recetas", recetasRoutes);
 
 // Cualquier otra ruta /api que no exista
 app.use("/api", (req, res) => res.status(404).json({ ok: false, error: "Ruta no encontrada." }));

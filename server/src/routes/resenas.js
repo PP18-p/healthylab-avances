@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import Resena from "../models/Resena.js";
 import { requiereSesion, requiereAdmin } from "../middleware/sesion.js";
 import { limite } from "../middleware/limite.js";
+import Receta from "../models/Receta.js";
 
 const router = Router();
 router.use(requiereSesion); // las recetas y sus reseñas solo se ven con sesión
@@ -31,6 +32,7 @@ router.post("/", limite(60 * 1000, 10), async (req, res) => {
     if (!esReceta(receta)) return res.status(400).json({ ok: false, error: "Receta inválida." });
     if (!Number.isInteger(estrellas) || estrellas < 1 || estrellas > 5) return res.status(400).json({ ok: false, error: "Elige de 1 a 5 estrellas." });
     if (texto.length < 5 || texto.length > 300) return res.status(400).json({ ok: false, error: "El comentario debe tener entre 5 y 300 caracteres." });
+    if (!(await Receta.exists({ numero: receta, borrada: false }))) return res.status(404).json({ ok: false, error: "Esa receta ya no existe." });
 
     const r = await Resena.create({ receta, usuario: req.usuario._id, nombre: req.usuario.nombre, estrellas, texto });
     res.status(201).json({ ok: true, resena: publica(r) });
