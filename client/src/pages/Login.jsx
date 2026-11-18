@@ -8,13 +8,13 @@ import "../styles/login.css";
 const CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 const TEXTOS = {
-    entrar: ["Bienvenido", "Ingresa con tu usuario o correo."],
+    entrar: ["Bienvenido", "Ingresa con el correo de tu cuenta."],
     crear: ["Crea tu cuenta", "Guarda tus recetas favoritas y tu lista de compras."]
 };
 
 /* Cada regla devuelve el mensaje de error, o "" si el valor es válido */
 const REGLAS = {
-    eId: v => v.trim() ? "" : "Escribe tu usuario o correo.",
+    eId: v => v.trim() ? "" : "Escribe tu correo electrónico.",
     ePass: v => v ? "" : "Escribe tu contraseña.",
     cNombre: v => !v.trim() ? "Escribe tu nombre." : v.trim().length < 3 ? "El nombre debe tener al menos 3 letras." : "",
     cCorreo: v => !v.trim() ? "Escribe tu correo electrónico." : !CORREO.test(v.trim()) ? "Ingresa un correo válido, por ejemplo nombre@correo.com." : "",
@@ -123,7 +123,7 @@ export default function Login() {
 
                 {tab === "entrar" ? (
                     <form className="formulario" onSubmit={enviarEntrar} noValidate>
-                        {campo("eId", "Usuario o correo", { autoComplete: "username", placeholder: "Escribe tu usuario o correo" })}
+                        {campo("eId", "Correo electrónico", { autoComplete: "username", placeholder: "nombre@correo.com" })}
                         {campo("ePass", "Contraseña", { clave: true, tipo: "password", autoComplete: "current-password", placeholder: "Escribe tu contraseña" })}
                         <small className="error error--general" role="alert">{general}</small>
                         <button type="submit" className="boton">Ingresar</button>
