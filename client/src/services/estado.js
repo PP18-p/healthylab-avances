@@ -16,7 +16,8 @@ export function guardarEstado(cambios) {
 
 /* ===== Valoraciones ===== */
 export const cargarResenas = receta => api(`/resenas/${receta}`);
-export const publicarResena = datos => api("/resenas", { metodo: "POST", datos });
+export const publicarResena = ({ receta, estrellas, texto }) =>
+    api(`/resenas/${receta}`, { metodo: "POST", datos: { e: estrellas, t: texto } });
 
 /* ===== Texto ampliado (antes se guardaba dentro de la clave "hl") ===== */
 export const leerGrande = () => !!LS.get("hl_grande", LS.get("hl", {})?.grande);
