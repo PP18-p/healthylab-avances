@@ -14,6 +14,7 @@ if (!process.env.JWT_SECRET) {
 }
 
 const app = express();
+app.set("trust proxy", 1); // en Vercel, la IP real de cada persona llega en un encabezado
 app.use(express.json({ limit: "100kb" }));
 app.use(cookieParser());
 app.use(leerSesion);
